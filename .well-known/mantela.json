@@ -1,0 +1,55 @@
+{
+    "$schema": "https://tkytel.github.io/mantela/0.1/mantela.schema.json",
+    "version": "0.1.0",
+    "aboutMe": {
+      "identifier": "8400cd7b-9f20-4d1a-8e2e-fa278b245316",
+      "name": "scura",
+      "preferredPrefix": [
+        "862",
+        "0862"
+      ],
+      "sipUsername": "SIP-TRUNK-E3E940F2",
+      "sipPassword": "RFNtQWJNc1JOZk09",
+      "sipServer": "100.70.198.29"
+    },
+    "extensions": [
+      {
+        "name": "main",
+        "extension": "9661",
+        "type": "phone",
+        "identifier": "9QTTQJJV"
+      },
+      {
+        "name": "Testcall",
+        "extension": "1234",
+        "type": "information",
+        "identifier": "Z9BBPUXK"
+      }
+    ],
+    "providers": [
+      {
+        "name": "kimkim-san",
+        "prefix": "106",
+        "identifier": "8b741e2b-45f9-4187-9da1-05d866b79a09",
+        "mantela": "https://kimkim0106.net/.well-known/mantela.json"
+      },
+      {
+        "name": "vinca-major-nejikugi-san",
+        "prefix": "782",
+        "identifier": "edbb2bb2-fa28-11ef-8cbc-6f97f0d24f36",
+        "mantela": "https://www.scrwnl.eu.org/.well-known/mantela.json"
+      },
+      {
+        "name": "yude-san",
+        "prefix": "390",
+        "identifier": "3be47f94-3185-4198-ac3d-ca5ccb573cc2",
+        "mantela": "https://www.yude.jp.eu.org/.well-known/mantela.json"
+      },
+      {
+        "name": "shinanomai-san",
+        "prefix": "661",
+        "identifier": "5752ca4c-c828-4946-a8f3-7f8272206f2d",
+        "mantela": "https://da-tenshi.github.io/mantela.json"
+      }
+    ]
+  }
