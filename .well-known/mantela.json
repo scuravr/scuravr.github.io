@@ -1,55 +1,127 @@
 {
-    "$schema": "https://tkytel.github.io/mantela/0.1/mantela.schema.json",
-    "version": "0.1.0",
-    "aboutMe": {
-      "identifier": "8400cd7b-9f20-4d1a-8e2e-fa278b245316",
-      "name": "scura",
-      "preferredPrefix": [
-        "862",
-        "0862"
-      ],
-      "sipUsername": "SIP-TRUNK-E3E940F2",
-      "sipPassword": "RFNtQWJNc1JOZk09",
-      "sipServer": "100.70.198.29"
-    },
-    "extensions": [
-      {
-        "name": "main",
-        "extension": "9661",
-        "type": "phone",
-        "identifier": "9QTTQJJV"
-      },
-      {
-        "name": "Testcall",
-        "extension": "1234",
-        "type": "information",
-        "identifier": "Z9BBPUXK"
-      }
+  "$schema": "https://tkytel.github.io/mantela/0.1/mantela.schema.json",
+  "version": "0.1.0",
+  "aboutMe": {
+    "identifier": "8400cd7b-9f20-4d1a-8e2e-fa278b245316",
+    "name": "scura",
+    "preferredPrefix": [
+      "862",
+      "0862"
     ],
-    "providers": [
-      {
-        "name": "kimkim-san",
-        "prefix": "106",
-        "identifier": "8b741e2b-45f9-4187-9da1-05d866b79a09",
-        "mantela": "https://kimkim0106.net/.well-known/mantela.json"
-      },
-      {
-        "name": "vinca-major-nejikugi-san",
-        "prefix": "782",
-        "identifier": "edbb2bb2-fa28-11ef-8cbc-6f97f0d24f36",
-        "mantela": "https://www.scrwnl.eu.org/.well-known/mantela.json"
-      },
-      {
-        "name": "yude-san",
-        "prefix": "390",
-        "identifier": "3be47f94-3185-4198-ac3d-ca5ccb573cc2",
-        "mantela": "https://www.yude.jp.eu.org/.well-known/mantela.json"
-      },
-      {
-        "name": "shinanomai-san",
-        "prefix": "661",
-        "identifier": "5752ca4c-c828-4946-a8f3-7f8272206f2d",
-        "mantela": "https://da-tenshi.github.io/mantela.json"
-      }
-    ]
-  }
+    "sipUsername": "SIP-TRUNK-E3E940F2",
+    "sipPassword": "RFNtQWJNc1JOZk09",
+    "sipServer": "100.70.198.29"
+  },
+  "extensions": [
+    {
+      "name": "600a1-01",
+      "extension": "9661",
+      "type": "phone",
+      "identifier": "9QTTQJJV"
+    },
+    {
+      "name": "4gou-01",
+      "extension": "9661",
+      "type": "phone",
+      "identifier": "X9TMH7M0"
+    },
+    {
+      "name": "Testcall",
+      "extension": "1234",
+      "type": "information",
+      "identifier": "Z9BBPUXK"
+    },
+    {
+      "name": "hatoya",
+      "extension": "4126",
+      "type": "information",
+      "identifier": "H1Z6ZV5X"
+    }
+  ],
+  "providers": [
+    {
+      "name": "yude",
+      "prefix": "390",
+      "identifier": "3be47f94-3185-4198-ac3d-ca5ccb573cc2",
+      "mantela": "https://www.yude.jp.eu.org/.well-known/mantela.json"
+    },
+    {
+      "name": "MikaNeTEL",
+      "prefix": "510",
+      "identifier": "93b2d256-39c1-4053-bda1-c0643dd40690",
+      "mantela": "https://unstable.kusaremkn.com/.well-known/mantela.json"
+    },
+    {
+      "name": "jiminy Local",
+      "prefix": "119",
+      "identifier": "153048c5-db33-4e00-ad49-694762555d5c",
+      "mantela": "https://108jiminy.jp/phone/jiminylocalmantela.json"
+    },
+    {
+      "name": "jiminy Public",
+      "prefix": "108",
+      "identifier": "5bbdd9ae-4d41-420c-80df-eba486495b12",
+      "mantela": "https://108jiminy.jp/phone/jiminypublicmantela.json"
+    },
+    {
+      "name": "hieri",
+      "prefix": "890",
+      "identifier": "91c5f34f-c178-4cfe-a488-be6ed00fac3b",
+      "mantela": "https://hieri1021.github.io/.well-known/mantela.json"
+    },
+    {
+      "name": "KaiwareTEL",
+      "prefix": "308",
+      "identifier": "b2b242ff-826f-78a4-4315-c1d0573311de",
+      "mantela": "https://kaiware9011.github.io/mantela/KaiwareMantela.json"
+    },
+    {
+      "name": "sgch",
+      "prefix": "248",
+      "identifier": "81c99427-4a30-4364-8b17-fed97f347439",
+      "mantela": "https://sgchsgch.net/.well-known/mantela.json"
+    },
+    {
+      "name": "MCeTeLO",
+      "prefix": "917",
+      "identifier": "46fb2dc7-ee07-435d-9a27-0a7b4d43d3d7",
+      "mantela": "https://meishicafei.github.io/.well-known/mantela.json"
+    },
+    {
+      "name": "macaron",
+      "prefix": "798",
+      "identifier": "24e24ec4-746a-4736-920d-47a725201154",
+      "mantela": "https://telephony.jm8krg.net/.well-known/mantela.json"
+    },
+    {
+      "name": "YamaSeriPhones",
+      "prefix": "418",
+      "identifier": "859c4016-624e-495f-86b4-ca0beb2e7c62",
+      "mantela": "https://yamaserif.com/phone/mantela.json"
+    },
+    {
+      "name": "kimkim0106",
+      "prefix": "106",
+      "identifier": "8b741e2b-45f9-4187-9da1-05d866b79a09",
+      "mantela": "https://kimkim0106.net/.well-known/mantela.json"
+    },
+    {
+      "name": "yoshina",
+      "prefix": "0447",
+      "identifier": "db30e15e-b101-4069-a406-9af3fdfe5c2e",
+      "mantela": "https://yosh1na-hub.github.io/Mantela/Mantela.yoshina.json"
+    },
+    {
+      "name": "AmagasakiSHINANO",
+      "prefix": "661",
+      "identifier": "5752ca4c-c828-4946-a8f3-7f8272206f2d",
+      "mantela": "https://da-tenshi.github.io/mantela.json"
+    },
+    {
+      "name": "SCRWNLNET",
+      "prefix": "782",
+      "identifier": "edbb2bb2-fa28-11ef-8cbc-6f97f0d24f36",
+      "mantela": "https://www.scrwnl.eu.org/.well-known/mantela.json"
+    }
+  ]
+}
