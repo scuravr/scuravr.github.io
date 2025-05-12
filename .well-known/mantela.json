@@ -16,20 +16,26 @@
     {
       "name": "600a1-01",
       "extension": "9661",
-      "type": "phone",
+      "type": "dialphone",
       "identifier": "9QTTQJJV"
     },
     {
       "name": "4gou-01",
       "extension": "9661",
-      "type": "phone",
+      "type": "dialphone",
       "identifier": "X9TMH7M0"
     },
         {
       "name": "tianjin-hb680",
       "extension": "9662",
-      "type": "phone",
+      "type": "dialphone",
       "identifier": "AH6Y69RK"
+    },
+            {
+      "name": "windows-pc",
+      "extension": "2672",
+      "type": "other",
+      "identifier": "TJFVTUXY"
     },
     {
       "name": "Testcall",
