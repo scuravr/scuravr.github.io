@@ -25,6 +25,12 @@
       "type": "phone",
       "identifier": "X9TMH7M0"
     },
+        {
+      "name": "tianjin-hb680",
+      "extension": "9662",
+      "type": "phone",
+      "identifier": "AH6Y69RK"
+    },
     {
       "name": "Testcall",
       "extension": "1234",
