@@ -25,13 +25,19 @@
       "type": "dialphone",
       "identifier": "X9TMH7M0"
     },
-        {
+    {
       "name": "tianjin-hb680",
       "extension": "9662",
       "type": "dialphone",
       "identifier": "AH6Y69RK"
     },
-            {
+    {
+      "name": "601a2-01",
+      "extension": "9662",
+      "type": "dialphone",
+      "identifier": "V703HOTL"
+    },
+    {
       "name": "windows-software-phone",
       "extension": "2672",
       "type": "phone",
