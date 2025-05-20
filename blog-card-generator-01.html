@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ブログカードジェネレーター</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    .description {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #666;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+    
+    input[type="text"], 
+    input[type="url"], 
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    
+    input[type="text"]:focus, 
+    input[type="url"]:focus, 
+    textarea:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+    
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .checkbox-group input {
+      margin-right: 10px;
+    }
+    
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 15px 0;
+      transition: background-color 0.3s;
+      display: block;
+      width: 100%;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    
+    .preview {
+      margin: 30px 0;
+      border: 1px dashed #ddd;
+      padding: 20px;
+      border-radius: 4px;
+      background-color: #fafafa;
+    }
+    
+    .preview h3 {
+      margin-top: 0;
+      color: #555;
+      margin-bottom: 15px;
+    }
+    
+    .code-output {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 20px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+    
+    .code-output h3 {
+      margin-top: 0;
+      color: #555;
+      margin-bottom: 15px;
+    }
+    
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 14px;
+      background-color: #f8f8f8;
+      padding: 15px;
+      border-radius: 4px;
+      border: 1px solid #eee;
+      overflow-x: auto;
+    }
+    
+    .copy-btn {
+      background-color: #2196F3;
+      margin-top: 15px;
+    }
+    
+    .copy-btn:hover {
+      background-color: #0b7dda;
+    }
+    
+    .fetched-data {
+      background-color: #f0f8ff;
+      border-left: 4px solid #2196F3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    
+    .fetched-data h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #0b7dda;
+    }
+    
+    .fetched-data p {
+      margin: 8px 0;
+    }
+    
+    .fetched-data .fetched-item {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    
+    .fetched-data .fetched-label {
+      font-weight: bold;
+      min-width: 100px;
+      color: #555;
+    }
+    
+    .fetched-data .fetched-value {
+      flex: 1;
+      word-break: break-all;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+      height: 60px;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border-left-color: #4CAF50;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    .themes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .theme-btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 8px 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    .theme-btn.active {
+      background-color: #e8f5e9;
+      border-color: #4CAF50;
+      color: #2e7d32;
+    }
+    
+    .edit-section {
+      margin-top: 15px;
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 4px;
+      border: 1px solid #eee;
+    }
+    
+    .edit-section h4 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #555;
+    }
+    
+    .error-message {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 15px 0;
+      border-left: 4px solid #f44336;
+    }
+    
+    .section-divider {
+      margin: 30px 0;
+      border: 0;
+      height: 1px;
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    }
+    
+    .mode-toggle {
+      margin: 20px 0;
+      text-align: center;
+    }
+    
+    .mode-toggle button {
+      width: auto;
+      display: inline-block;
+      margin: 0 5px;
+      padding: 8px 15px;
+      font-size: 14px;
+    }
+    
+    .mode-toggle button.active {
+      background-color: #2e7d32;
+    }
+    
+    .tab-container {
+      margin-bottom: 20px;
+    }
+    
+    .tab-buttons {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .tab-btn {
+      padding: 10px 20px;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      margin-right: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .tab-btn.active {
+      background-color: #fff;
+      border-bottom: 1px solid #fff;
+      margin-bottom: -1px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    
+    .tab-content {
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-top: none;
+      background-color: #fff;
+    }
+    
+    .tab-panel {
+      display: none;
+    }
+    
+    .tab-panel.active {
+      display: block;
+    }
+    
+    .notice {
+      background-color: #e8f5e9;
+      border-left: 4px solid #4CAF50;
+      padding: 15px;
+      margin: 15px 0;
+      color: #2e7d32;
+    }
+    
+    .warning {
+      background-color: #fff8e1;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 15px 0;
+      color: #ff8f00;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ブログカードジェネレーター</h1>
+    <p class="description">URLをもとにブログカードを生成するツール</p>
+    
+    <div class="tab-container">
+      <div class="tab-buttons">
+        <div class="tab-btn active" data-tab="auto">自動取得モード</div>
+        <div class="tab-btn" data-tab="manual">手動入力モード</div>
+      </div>
+      
+      <div class="tab-content">
+        <!-- 自動取得モード -->
+        <div class="tab-panel active" id="auto-panel">
+          <p class="notice">URLを入力して「メタデータを取得」ボタンをクリックすると、タイトル・説明・画像を自動取得します。</p>
+          <p class="warning">CORSプロキシサービスを使用していますが、一部のサイトではデータを取得できない場合があります。その場合は手動入力モードをお試しください。</p>
+          
+          <div class="form-group">
+            <label for="auto-url">URL</label>
+            <input type="url" id="auto-url" placeholder="https://example.com">
+          </div>
+          
+          <button id="fetch-data">メタデータを取得</button>
+          
+          <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+          </div>
+          
+          <div id="error-message" class="error-message" style="display: none;"></div>
+          
+          <div id="fetched-data" class="fetched-data" style="display: none;">
+            <h3>取得したメタデータ</h3>
+            <div class="fetched-item">
+              <div class="fetched-label">タイトル:</div>
+              <div id="fetched-title" class="fetched-value"></div>
+            </div>
+            <div class="fetched-item">
+              <div class="fetched-label">説明:</div>
+              <div id="fetched-description" class="fetched-value"></div>
+            </div>
+            <div class="fetched-item">
+              <div class="fetched-label">画像URL:</div>
+              <div id="fetched-image" class="fetched-value"></div>
+            </div>
+            
+            <div class="edit-section">
+              <h4>メタデータの編集（必要な場合）</h4>
+              <div class="form-group">
+                <label for="edit-title">タイトル</label>
+                <input type="text" id="edit-title">
+              </div>
+              <div class="form-group">
+                <label for="edit-description">説明</label>
+                <textarea id="edit-description" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="edit-image">画像URL</label>
+                <input type="url" id="edit-image">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 手動入力モード -->
+        <div class="tab-panel" id="manual-panel">
+          <p class="notice">メタデータを手動で入力してブログカードを生成します。</p>
+          
+          <div class="form-group">
+            <label for="manual-url">URL</label>
+            <input type="url" id="manual-url" placeholder="https://example.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="manual-title">タイトル</label>
+            <input type="text" id="manual-title" placeholder="ページのタイトル">
+          </div>
+          
+          <div class="form-group">
+            <label for="manual-description">説明</label>
+            <textarea id="manual-description" rows="3" placeholder="ページの説明..."></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="manual-image">画像URL</label>
+            <input type="url" id="manual-image" placeholder="https://example.com/image.jpg">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="section-divider">
+    
+    <div class="checkbox-group">
+      <input type="checkbox" id="show-description" checked>
+      <label for="show-description">説明を表示する</label>
+    </div>
+    
+    <div class="form-group">
+      <label>テーマ選択:</label>
+      <div class="themes">
+        <div class="theme-btn active" data-theme="default">デフォルト</div>
+        <div class="theme-btn" data-theme="minimal">ミニマル</div>
+        <div class="theme-btn" data-theme="shadow">シャドウ</div>
+        <div class="theme-btn" data-theme="border">ボーダー</div>
+      </div>
+    </div>
+    
+    <button id="generate-card">ブログカードを生成</button>
+    
+    <div class="preview">
+      <h3>プレビュー</h3>
+      <div id="card-preview"></div>
+    </div>
+    
+    <div class="code-output">
+      <h3>コピーするHTMLコード</h3>
+      <pre id="html-output">ブログカードを生成するとここにHTMLコードが表示されます</pre>
+      <button id="copy-code" class="copy-btn">コードをコピー</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // タブ切り替え
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+      
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabId = btn.getAttribute('data-tab');
+          
+          // タブボタンのアクティブ状態を切り替え
+          tabButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          // タブパネルの表示を切り替え
+          tabPanels.forEach(panel => panel.classList.remove('active'));
+          document.getElementById(`${tabId}-panel`).classList.add('active');
+        });
+      });
+      
+      // 自動取得モード
+      const autoUrlInput = document.getElementById('auto-url');
+      const fetchDataButton = document.getElementById('fetch-data');
+      const loadingIndicator = document.getElementById('loading');
+      const errorMessage = document.getElementById('error-message');
+      const fetchedDataSection = document.getElementById('fetched-data');
+      const fetchedTitle = document.getElementById('fetched-title');
+      const fetchedDescription = document.getElementById('fetched-description');
+      const fetchedImage = document.getElementById('fetched-image');
+      
+      const editTitleInput = document.getElementById('edit-title');
+      const editDescriptionInput = document.getElementById('edit-description');
+      const editImageInput = document.getElementById('edit-image');
+      
+      // 手動入力モード
+      const manualUrlInput = document.getElementById('manual-url');
+      const manualTitleInput = document.getElementById('manual-title');
+      const manualDescriptionInput = document.getElementById('manual-description');
+      const manualImageInput = document.getElementById('manual-image');
+      
+      // 共通の要素
+      const showDescriptionCheckbox = document.getElementById('show-description');
+      const generateCardButton = document.getElementById('generate-card');
+      const cardPreview = document.getElementById('card-preview');
+      const htmlOutput = document.getElementById('html-output');
+      const copyCodeButton = document.getElementById('copy-code');
+      const themeButtons = document.querySelectorAll('.theme-btn');
+      
+      let currentTheme = 'default';
+      let activeTab = 'auto';
+      
+      // テーマ選択
+      themeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          themeButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentTheme = btn.getAttribute('data-theme');
+        });
+      });
+      
+      // 複数のCORSプロキシサービスを試す
+      const corsProxies = [
+        (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+        (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        (url) => `https://cors.eu.org/${url}`
+      ];
+      
+      // URLからメタデータを取得（複数のプロキシを順番に試す）
+      fetchDataButton.addEventListener('click', async () => {
+        const url = autoUrlInput.value.trim();
+        
+        if (!url) {
+          showError('URLを入力してください');
+          return;
+        }
+        
+        if (!isValidURL(url)) {
+          showError('有効なURLを入力してください');
+          return;
+        }
+        
+        resetUI();
+        showLoading(true);
+        
+        let success = false;
+        let lastError = null;
+        
+        // 各プロキシを順番に試す
+        for (let i = 0; i < corsProxies.length; i++) {
+          try {
+            const proxyUrl = corsProxies[i](url);
+            
+            const response = await fetch(proxyUrl);
+            if (!response.ok) {
+              lastError = new Error(`サイトのデータ取得に失敗しました (${response.status})`);
+              continue;
+            }
+            
+            const data = await response.json();
+            let html;
+            
+            // プロキシごとにレスポンス形式が異なるので対応
+            if (i === 0) { // allorigins
+              if (!data.contents) {
+                lastError = new Error('サイトのコンテンツを取得できませんでした');
+                continue;
+              }
+              html = data.contents;
+            } else if (i === 1) { // corsproxy.io
+              html = data;
+            } else { // cors.eu.org
+              html = data;
+            }
+            
+            const metadata = extractMetadata(html, url);
+            
+            if (!metadata.title && !metadata.description && !metadata.image) {
+              lastError = new Error('メタデータを取得できませんでした');
+              continue;
+            }
+            
+            displayMetadata(metadata);
+            success = true;
+            break;
+          } catch (err) {
+            lastError = err;
+            console.error(`プロキシ ${i+1} でのエラー:`, err);
+          }
+        }
+        
+        if (!success && lastError) {
+          showError(`${lastError.message || 'メタデータの取得中にエラーが発生しました'}<br>手動入力モードに切り替えて試してください。`);
+          // 手動入力モードに誘導
+          tabButtons[1].click();
+          manualUrlInput.value = url;
+        }
+        
+        showLoading(false);
+      });
+      
+      // ブログカードのプレビューとHTMLを生成
+      generateCardButton.addEventListener('click', generatePreview);
+      
+      // 説明の表示/非表示を切り替え
+      showDescriptionCheckbox.addEventListener('change', () => {
+        if (getActiveData().title) {
+          generatePreview();
+        }
+      });
+      
+      // HTMLコードをコピー
+      copyCodeButton.addEventListener('click', () => {
+        const textToCopy = htmlOutput.textContent;
+        navigator.clipboard.writeText(textToCopy)
+          .then(() => {
+            const originalText = copyCodeButton.textContent;
+            copyCodeButton.textContent = 'コピーしました！';
+            setTimeout(() => {
+              copyCodeButton.textContent = originalText;
+            }, 2000);
+          })
+          .catch(err => {
+            showError('コピーに失敗しました。ブラウザの設定を確認してください。');
+          });
+      });
+      
+      // HTMLからメタデータを抽出する関数
+      function extractMetadata(html, url) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        // デフォルトドメイン（相対URLを絶対URLに変換するため）
+        let domain = '';
+        try {
+          const urlObj = new URL(url);
+          domain = urlObj.origin;
+        } catch (e) {
+          console.error('Invalid URL for domain extraction', e);
+        }
+        
+        // タイトルの取得（優先順位: OGタイトル > titleタグ）
+        let title = doc.querySelector('meta[property="og:title"]')?.getAttribute('content') ||
+                  doc.querySelector('meta[name="twitter:title"]')?.getAttribute('content') ||
+                  doc.querySelector('title')?.textContent || '';
+        
+        // 説明の取得（優先順位: OG説明 > メタ説明）
+        let description = doc.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
+                        doc.querySelector('meta[name="twitter:description"]')?.getAttribute('content') ||
+                        doc.querySelector('meta[name="description"]')?.getAttribute('content') || '';
+        
+        // 画像の取得（優先順位: OG画像 > Twitterカード画像）
+        let imageUrl = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') ||
+                     doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content') || '';
+        
+        // 相対URLを絶対URLに変換
+        if (imageUrl && !imageUrl.startsWith('http') && domain) {
+          imageUrl = imageUrl.startsWith('/') ? `${domain}${imageUrl}` : `${domain}/${imageUrl}`;
+        }
+        
+        return {
+          title: title.trim(),
+          description: description.trim(),
+          image: imageUrl.trim()
+        };
+      }
+      
+      // 取得したメタデータを表示する関数
+      function displayMetadata(metadata) {
+        fetchedTitle.textContent = metadata.title || '取得できませんでした';
+        fetchedDescription.textContent = metadata.description || '取得できませんでした';
+        fetchedImage.textContent = metadata.image || '取得できませんでした';
+        
+        // 編集フォームに初期値をセット
+        editTitleInput.value = metadata.title || '';
+        editDescriptionInput.value = metadata.description || '';
+        editImageInput.value = metadata.image || '';
+        
+        fetchedDataSection.style.display = 'block';
+      }
+      
+      // アクティブなタブのデータを取得する関数
+      function getActiveData() {
+        const activeTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
+        
+        if (activeTab === 'auto') {
+          return {
+            url: autoUrlInput.value.trim(),
+            title: editTitleInput.value.trim(),
+            description: editDescriptionInput.value.trim(),
+            image: editImageInput.value.trim()
+          };
+        } else {
+          return {
+            url: manualUrlInput.value.trim(),
+            title: manualTitleInput.value.trim(),
+            description: manualDescriptionInput.value.trim(),
+            image: manualImageInput.value.trim()
+          };
+        }
+      }
+      
+      // ブログカードのプレビューとHTMLを生成する関数
+      function generatePreview() {
+        const data = getActiveData();
+        const showDescription = showDescriptionCheckbox.checked;
+        
+        if (!data.url || !data.title) {
+          showError('URLとタイトルは必須です');
+          return;
+        }
+        
+        // ユニークなクラスプレフィックスを作成（CSSのスコープ用）
+        const cardPrefix = 'blog-card-wrapper';
+        
+        // テーマのスタイルを取得
+        const themeStyles = getThemeStyles(currentTheme);
+        
+        // ブログカードのHTMLを生成
+        const cardHTML = `
+<div class="${cardPrefix}">
+  <style>
+    /* ブログカードのスタイル - スコープされたCSS */
+    .${cardPrefix} * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .${cardPrefix} .blog-card {
+      display: flex;
+      max-width: 100%;
+      margin: 20px 0;
+      text-decoration: none;
+      overflow: hidden;
+      ${themeStyles.card}
+    }
+    
+    .${cardPrefix} .blog-card-image {
+      flex: 0 0 30%;
+      background-size: cover;
+      background-position: center;
+      min-height: 150px;
+      ${themeStyles.image}
+    }
+    
+    .${cardPrefix} .blog-card-content {
+      flex: 1;
+      padding: 15px;
+      ${themeStyles.content}
+    }
+    
+    .${cardPrefix} .blog-card-title {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1.4;
+      ${themeStyles.title}
+    }
+    
+    .${cardPrefix} .blog-card-description {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      ${themeStyles.description}
+    }
+    
+    .${cardPrefix} .blog-card-url {
+      display: block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #999;
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      ${themeStyles.url}
+    }
+    
+    /* レスポンシブデザイン */
+    @media (max-width: 600px) {
+      .${cardPrefix} .blog-card {
+        flex-direction: column;
+      }
+      
+      .${cardPrefix} .blog-card-image {
+        flex: 0 0 150px;
+        width: 100%;
+      }
+    }
+  </style>
+  <a href="${encodeHTML(data.url)}" target="_blank" class="blog-card">
+    ${data.image ? `<div class="blog-card-image" style="background-image: url('${encodeHTML(data.image)}')"></div>` : ''}
+    <div class="blog-card-content">
+      <h3 class="blog-card-title">${encodeHTML(data.title)}</h3>
+      ${showDescription && data.description ? `<p class="blog-card-description">${encodeHTML(data.description)}</p>` : ''}
+      <span class="blog-card-url">${encodeHTML(data.url)}</span>
+    </div>
+  </a>
+</div>`;
+        
+        // プレビューを更新
+        cardPreview.innerHTML = cardHTML;
+        
+        // HTML出力を更新
+        htmlOutput.textContent = cardHTML.trim();
+      }
+      
+      // テーマ別のスタイルを取得するヘルパー関数
+      function getThemeStyles(theme) {
+        const themes = {
+          default: {
+            card: 'border: 1px solid #ddd; border-radius: 6px; background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);',
+            image: '',
+            content: '',
+            title: 'color: #333;',
+            description: 'color: #666;',
+            url: ''
+          },
+          minimal: {
+            card: 'border: none; background-color: #fff;',
+            image: '',
+            content: 'padding: 15px 0;',
+            title: 'color: #333; font-weight: normal;',
+            description: 'color: #666;',
+            url: ''
+          },
+          shadow: {
+            card: 'border: none; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 16px rgba(0,0,0,0.12);',
+            image: 'border-radius: 8px 0 0 8px;',
+            content: '',
+            title: 'color: #222;',
+            description: 'color: #555;',
+            url: ''
+          },
+          border: {
+            card: 'border: 2px solid #eaeaea; border-radius: 0; background-color: #fff;',
+            image: '',
+            content: '',
+            title: 'color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;',
+            description: 'color: #666; margin-top: 10px;',
+            url: ''
+          }
+        };
+        
+        return themes[theme] || themes.default;
+      }
+      
+      // HTMLエンティティをエンコードするヘルパー関数
+      function encodeHTML(str) {
+        if (!str) return '';
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+      
+      // URLが有効かチェックする関数
+      function isValidURL(url) {
+        try {
+          new URL(url);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+      
+      // 読み込み中の表示を切り替える関数
+      function showLoading(isLoading) {
+        loadingIndicator.style.display = isLoading ? 'flex' : 'none';
+        fetchDataButton.disabled = isLoading;
+      }
+      
+      // エラーメッセージを表示する関数
+      function showError(message) {
+        errorMessage.innerHTML = message;
+        errorMessage.style.display = 'block';
+        setTimeout(() => {
+          errorMessage.style.display = 'none';
+        }, 10000);
+      }
+      
+      // UI状態をリセットする関数
+      function resetUI() {
+        errorMessage.style.display = 'none';
+        fetchedDataSection.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
