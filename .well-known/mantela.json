@@ -10,32 +10,41 @@
     ],
     "sipUsername": "SIP-TRUNK-E3E940F2",
     "sipPassword": "RFNtQWJNc1JOZk09",
-    "sipServer": "100.70.198.29"
+    "sipServer": "100.70.198.29",
+    "image": "https://scuravr.github.io/img/gmktec-server_01.webp"
   },
   "extensions": [
     {
       "name": "600a1-01",
       "extension": "9661",
       "type": "dialphone",
-      "identifier": "9QTTQJJV"
+      "identifier": "9QTTQJJV",
+      "model": "600-A形卓上電話機",
+      "image": "https://scuravr.github.io/img/600_a1_01.webp"
     },
     {
       "name": "4gou-01",
       "extension": "9661",
       "type": "dialphone",
-      "identifier": "X9TMH7M0"
+      "identifier": "X9TMH7M0",
+      "model": "4号A卓上電話機",
+      "image": "https://scuravr.github.io/img/4gou_01.webp"
     },
     {
       "name": "tianjin-hb680",
       "extension": "9662",
       "type": "dialphone",
-      "identifier": "AH6Y69RK"
+      "identifier": "AH6Y69RK",
+      "model": "邮电部天津电话设备厂HB680型自动电话机",
+      "image": "https://scuravr.github.io/img/tianjin_hb680.webp"
     },
     {
       "name": "601a2-01",
       "extension": "9662",
       "type": "dialphone",
-      "identifier": "V703HOTL"
+      "identifier": "V703HOTL",
+      "model": "601-A形卓上電話機",
+      "image": "https://scuravr.github.io/img/601_a2_01.webp"
     },
     {
       "name": "windows-software-phone",
