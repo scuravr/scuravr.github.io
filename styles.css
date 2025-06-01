@@ -63,6 +63,39 @@ a:hover {
     text-decoration: underline;
 }
 
+/* レスポンシブ画像 */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+img:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 画像コンテナ（オプション） */
+.image-container {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.image-container img {
+    margin: 0;
+}
+
+.image-caption {
+    font-size: 0.9rem;
+    color: #666666;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
 /* レスポンシブデザイン */
 @media screen and (max-width: 600px) {
     .container {
@@ -80,5 +113,15 @@ a:hover {
     
     li {
         margin-bottom: 0.8rem;
+    }
+    
+    /* モバイル向け画像調整 */
+    img {
+        margin: 1rem auto;
+        border-radius: 6px;
+    }
+    
+    .image-container {
+        margin: 1.5rem 0;
     }
 }
