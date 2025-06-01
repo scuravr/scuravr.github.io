@@ -69,14 +69,6 @@ img {
     height: auto;
     display: block;
     margin: 1.5rem auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-img:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* 画像コンテナ（オプション） */
@@ -118,7 +110,6 @@ img:hover {
     /* モバイル向け画像調整 */
     img {
         margin: 1rem auto;
-        border-radius: 6px;
     }
     
     .image-container {
