@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>OGイメージジェネレーター | 無料でソーシャルメディア用画像を作成</title>
+    <meta name="description" content="無料のOGイメージジェネレーター。TwitterやFacebook用のカスタム画像を簡単作成。URL入力で自動取得、多彩な装飾スタイル、ダウンロード機能付き。">
+    <meta name="keywords" content="OGイメージ,ソーシャルメディア,画像生成,Twitter,Facebook,無料ツール,OG image generator,social media">
+    <meta name="author" content="OG Image Generator">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="ja">
+    <link rel="canonical" href="https://scuravr.github.io/og-image-generator/">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://scuravr.github.io/og-image-generator/">
+    <meta property="og:title" content="OGイメージジェネレーター | 無料でソーシャルメディア用画像を作成">
+    <meta property="og:description" content="無料のOGイメージジェネレーター。TwitterやFacebook用のカスタム画像を簡単作成。URL入力で自動取得、多彩な装飾スタイル、ダウンロード機能付き。">
+    <meta property="og:image" content="img/og-image-generator-og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:site_name" content="OG Image Generator">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="og:locale:alternate" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://scuravr.github.io/og-image-generator/">
+    <meta name="twitter:title" content="OGイメージジェネレーター | 無料でソーシャルメディア用画像を作成">
+    <meta name="twitter:description" content="無料のOGイメージジェネレーター。TwitterやFacebook用のカスタム画像を簡単作成。URL入力で自動取得、多彩な装飾スタイル、ダウンロード機能付き。">
+    <meta name="twitter:image" content="img/og-image-generator-og-image.png">
+    <meta name="twitter:image:alt" content="OGイメージジェネレーター - ソーシャルメディア用画像作成ツール">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#6b7280">
+    <meta name="msapplication-TileColor" content="#6b7280">
+    <meta name="application-name" content="OG Image Generator">
+    <meta name="apple-mobile-web-app-title" content="OG Image Generator">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link rel="apple-touch-icon" href="../img/favicon.ico">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="title-section">
+                    <h1 data-i18n="title">OGイメージジェネレーター</h1>
+                    <p data-i18n="subtitle">ソーシャルメディア用のカスタムOGイメージを作成</p>
+                </div>
+                <div class="language-switcher">
+                    <button id="lang-ja" class="lang-btn active" data-lang="ja">日本語</button>
+                    <button id="lang-en" class="lang-btn" data-lang="en">English</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="controls">
+                <div class="input-group">
+                    <label for="text-input" data-i18n="textLabel">テキスト</label>
+                    <textarea id="text-input" data-i18n-placeholder="textPlaceholder" placeholder="ここにテキストを入力してください..." rows="3"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="url-input" data-i18n="urlLabel">URL入力（自動取得）※一部サイトはCORSエラーで取得できない場合があります</label>
+                    <div class="url-input-container">
+                        <input type="url" id="url-input" data-i18n-placeholder="urlPlaceholder" placeholder="https://example.com">
+                        <button type="button" id="fetch-btn" class="fetch-btn" data-i18n="fetchBtn">取得</button>
+                    </div>
+                    <div id="url-status" class="url-status"></div>
+                </div>
+
+                <div class="color-controls">
+                    <div class="input-group">
+                        <label data-i18n="bgColorLabel">背景色</label>
+                        <div class="color-options">
+                            <div class="preset-colors">
+                                <button class="color-preset active" data-color="#BAE1FF" style="background: #BAE1FF" title="パステルブルー"></button>
+                                <button class="color-preset" data-color="#2B6CB0" style="background: #2B6CB0" title="ディープブルー"></button>
+                                <button class="color-preset" data-color="#FFB3BA" style="background: #FFB3BA" title="パステルレッド"></button>
+                                <button class="color-preset" data-color="#DC2626" style="background: #DC2626" title="ディープレッド"></button>
+                                <button class="color-preset" data-color="#BAFFC9" style="background: #BAFFC9" title="パステルグリーン"></button>
+                                <button class="color-preset" data-color="#16A34A" style="background: #16A34A" title="ディープグリーン"></button>
+                                <button class="color-preset" data-color="#FFFFBA" style="background: #FFFFBA" title="パステルイエロー"></button>
+                                <button class="color-preset" data-color="#CA8A04" style="background: #CA8A04" title="ディープイエロー"></button>
+                                <button class="color-preset" data-color="#E1BAFF" style="background: #E1BAFF" title="パステルパープル"></button>
+                                <button class="color-preset" data-color="#7C3AED" style="background: #7C3AED" title="ディープパープル"></button>
+                                <button class="color-preset" data-color="#FFD4BA" style="background: #FFD4BA" title="パステルオレンジ"></button>
+                                <button class="color-preset" data-color="#EA580C" style="background: #EA580C" title="ディープオレンジ"></button>
+                            </div>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="bg-color-picker" value="#BAE1FF">
+                                <label for="bg-color-picker" class="color-picker-label" data-i18n="customColor">カスタム色</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="text-color-picker" data-i18n="textColorLabel">文字色</label>
+                        <div class="text-color-section">
+                            <div class="text-color-presets">
+                                <button class="text-color-preset active" data-color="#333333" style="background: #333333" title="ダークグレー"></button>
+                                <button class="text-color-preset" data-color="#ffffff" style="background: #ffffff; border: 2px solid #ddd;" title="ホワイト"></button>
+                            </div>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="text-color-picker" value="#333333">
+                                <label for="text-color-picker" class="color-picker-label" data-i18n="customColor">カスタム色</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="decorationLabel">装飾スタイル</label>
+                    <div class="decoration-options">
+                        <button class="decoration-btn active" data-style="solid" data-i18n="decorationSolid">単色</button>
+                        <button class="decoration-btn" data-style="stripe" data-i18n="decorationStripe">ストライプ</button>
+                        <button class="decoration-btn" data-style="pattern" data-i18n="decorationPattern">パターン</button>
+                        <button class="decoration-btn" data-style="frame" data-i18n="decorationFrame">フレーム</button>
+                    </div>
+                </div>
+
+                <button id="generate-btn" class="generate-btn" data-i18n="generateBtn">生成</button>
+            </div>
+
+            <div class="preview">
+                <canvas id="canvas" width="1200" height="630"></canvas>
+                <button id="download-btn" class="download-btn" style="display: none;" data-i18n="downloadBtn">画像を保存</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
