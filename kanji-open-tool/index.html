@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>漢字をひらくツール</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>漢字をひらくツール</h1>
+        <p>日本語の漢字表現をひらがなに変換します</p>
+        
+        <div class="input-section">
+            <label for="inputText">変換するテキスト:</label>
+            <textarea id="inputText" placeholder="ここにテキストを貼り付けてください..."></textarea>
+        </div>
+
+        <div class="options-section">
+            <h3>変換オプション</h3>
+            <div class="checkbox-grid">
+                <label><input type="checkbox" value="特に" checked> 特に → とくに</label>
+                <label><input type="checkbox" value="例えば" checked> 例えば → たとえば</label>
+                <label><input type="checkbox" value="次に" checked> 次に → つぎに</label>
+                <label><input type="checkbox" value="一つ" checked> 一つ → ひとつ</label>
+                <label><input type="checkbox" value="実は" checked> 実は → じつは</label>
+                <label><input type="checkbox" value="確かに" checked> 確かに → たしかに</label>
+                <label><input type="checkbox" value="一方" checked> 一方 → いっぽう</label>
+                <label><input type="checkbox" value="出来" checked> 出来 → でき</label>
+                <label><input type="checkbox" value="良い" checked> 良い → よい</label>
+                <label><input type="checkbox" value="更に" checked> 更に → さらに</label>
+                <label><input type="checkbox" value="是非" checked> 是非 → ぜひ</label>
+                <label><input type="checkbox" value="時々" checked> 時々 → ときどき</label>
+                <label><input type="checkbox" value="何も" checked> 何も → なにも</label>
+                <label><input type="checkbox" value="する上で" checked> する上で → するうえで</label>
+                <label><input type="checkbox" value="色々" checked> 色々 → いろいろ</label>
+                <label><input type="checkbox" value="様々" checked> 様々 → さまざま</label>
+                <label><input type="checkbox" value="共に" checked> 共に → ともに</label>
+                <label><input type="checkbox" value="時"> 時 → とき</label>
+                <label><input type="checkbox" value="時には"> 時には → ときには</label>
+                <label><input type="checkbox" value="る時"> る時 → るとき</label>
+                <label><input type="checkbox" value="する時"> する時 → するとき</label>
+                <label><input type="checkbox" value="た時"> た時 → たとき</label>
+                <label><input type="checkbox" value="した時"> した時 → したとき</label>
+                <label><input type="checkbox" value="こんな時"> こんな時 → こんなとき</label>
+                <label><input type="checkbox" value="そんな時"> そんな時 → そんなとき</label>
+                <label><input type="checkbox" value="あんな時"> あんな時 → あんなとき</label>
+                <label><input type="checkbox" value="どんな時"> どんな時 → どんなとき</label>
+                <label><input type="checkbox" value="この時"> この時 → このとき</label>
+                <label><input type="checkbox" value="その時"> その時 → そのとき</label>
+                <label><input type="checkbox" value="あの時"> あの時 → あのとき</label>
+                <label><input type="checkbox" value="どの時"> どの時 → どのとき</label>
+            </div>
+            
+            <div class="control-buttons">
+                <button id="selectAll">すべて選択</button>
+                <button id="deselectAll">すべて解除</button>
+                <button id="selectNonTime">時関連以外を選択</button>
+            </div>
+        </div>
+
+        <div class="convert-section">
+            <button id="convertBtn">変換</button>
+        </div>
+
+        <div class="output-section">
+            <label for="outputText">変換結果:</label>
+            <textarea id="outputText" readonly></textarea>
+            <button id="copyBtn">コピー</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
