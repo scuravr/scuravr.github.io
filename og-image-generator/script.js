@@ -47,7 +47,9 @@ class OGImageGenerator {
                 fetching: '取得中...',
                 fetchSuccess: '取得完了',
                 fetchError: 'URL取得に失敗しました。CORSエラーまたはネットワークエラーの可能性があります',
-                noData: 'タイトルを取得できませんでした'
+                noData: 'タイトルを取得できませんでした',
+                backToHome: '← ホームに戻る',
+                footerText: 'OG Image Generator'
             },
             en: {
                 title: 'OG Image Generator',
@@ -75,7 +77,9 @@ class OGImageGenerator {
                 fetching: 'Fetching...',
                 fetchSuccess: 'Fetch completed',
                 fetchError: 'Failed to fetch URL. Possible CORS error or network error',
-                noData: 'Could not retrieve title'
+                noData: 'Could not retrieve title',
+                backToHome: '← Back to Home',
+                footerText: 'OG Image Generator'
             }
         };
         
