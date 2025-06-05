@@ -171,6 +171,25 @@ textarea:focus {
     cursor: not-allowed;
 }
 
+footer {
+    max-width: 800px;
+    margin: 20px auto 0;
+    text-align: center;
+    padding: 20px;
+}
+
+footer a {
+    color: #7f8c8d;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #3498db;
+    text-decoration: underline;
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 20px;
