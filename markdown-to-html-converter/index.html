@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Markdown to HTML Converter</title>
+    <link rel="stylesheet" href="markdown-converter-css.css">
+</head>
+<body>
+    <h1>Free Markdown to HTML Converter</h1>
+    <div class="container">
+        <div class="input-output">
+            <div class="panel">
+                <h3>Markdown Input</h3>
+                <textarea id="markdown-input" placeholder="Enter your Markdown here..."></textarea>
+            </div>
+            <div class="panel">
+                <h3>HTML Output</h3>
+                <div id="html-output" class="output"></div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button id="convert-button">Convert</button>
+            <button id="copy-button" class="copy-button">Copy</button>
+            <button id="clear-button" class="clear-button">Clear</button>
+        </div>
+        <div class="info">
+            <p>📝 <strong>How to use:</strong> Enter Markdown text and click the "Convert" button to transform it to HTML. Use the "Copy" button to copy the HTML to your clipboard.</p>
+            <p>🔒 <strong>Security:</strong> All processing happens in your browser locally. No data is sent to any server.</p>
+        </div>
+    </div>
+
+    <script src="marked.min.js"></script>
+    <script src="markdown-converter-js.js"></script>
+
+    <p><a href="../index.html">Return to index page</a></p>
+</body>
+</html>
