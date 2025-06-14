@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgRgbValue = document.getElementById('bg-rgb-value');
   const borderColorPicker = document.getElementById('border-color');
   const borderRgbValue = document.getElementById('border-rgb-value');
+  const textColorPicker = document.getElementById('text-color');
+  const textRgbValue = document.getElementById('text-rgb-value');
   const bannerPreviewSmall = document.getElementById('banner-preview-small');
   const bannerPreviewLarge = document.getElementById('banner-preview-large');
   const downloadSmallBtn = document.getElementById('download-small');
@@ -92,6 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePreview();
   });
   
+  // 文字色のカラーピッカー
+  textColorPicker.addEventListener('input', (e) => {
+    const color = e.target.value;
+    updateTextRGBValue(color);
+    updatePreview();
+  });
+  
   // 背景色のRGB値を更新
   function updateBgRGBValue(hex) {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -106,6 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
     borderRgbValue.textContent = `${r}, ${g}, ${b}`;
+  }
+  
+  // 文字色のRGB値を更新
+  function updateTextRGBValue(hex) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    textRgbValue.textContent = `${r}, ${g}, ${b}`;
   }
   
   
@@ -261,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const text = bannerTextInput.value || 'サンプルテキスト';
     const bgColor = bgColorPicker.value;
     const borderColor = borderColorPicker.value;
+    const textColor = textColorPicker.value;
     const smallTextSize = textSizeSmall.value;
     const largeTextSize = textSizeLarge.value;
     const imagePosition = document.querySelector('input[name="image-position"]:checked').value;
@@ -270,14 +288,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const largeBorderWidth = parseInt(borderWidthLarge.value);
     
     // 88x31px個別プレビュー更新
-    bannerPreviewSmall.innerHTML = generateBannerHTML(text, smallBorderWidth, borderColor, bgColor, 'small', smallTextSize, imagePosition);
+    bannerPreviewSmall.innerHTML = generateBannerHTML(text, smallBorderWidth, borderColor, bgColor, textColor, 'small', smallTextSize, imagePosition);
     
     // 234x60px個別プレビュー更新
-    bannerPreviewLarge.innerHTML = generateBannerHTML(text, largeBorderWidth, borderColor, bgColor, 'large', largeTextSize, imagePosition);
+    bannerPreviewLarge.innerHTML = generateBannerHTML(text, largeBorderWidth, borderColor, bgColor, textColor, 'large', largeTextSize, imagePosition);
   }
   
   // バナーHTML生成
-  function generateBannerHTML(text, borderWidthPx, borderColor, bgColor, size, fontSize, imagePosition) {
+  function generateBannerHTML(text, borderWidthPx, borderColor, bgColor, textColor, size, fontSize, imagePosition) {
     const contentClass = imagePosition === 'right' ? 'banner-content banner-content-right' : 'banner-content';
     const borderStyle = borderWidthPx > 0 ? `border: ${borderWidthPx}px solid ${borderColor};` : 'border: none;';
     
@@ -290,14 +308,14 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="banner-${size}" style="${borderStyle} background-color: ${bgColor};">
           <div class="${contentClass}" style="padding: 0;">
             <img src="${croppedImage}" class="banner-image-${size}" style="width: ${imageSize}px; height: ${imageSize}px; display: block;" alt="バナー画像">
-            <div class="banner-text-${size}" style="font-size: ${fontSize}px;">${text}</div>
+            <div class="banner-text-${size}" style="font-size: ${fontSize}px; color: ${textColor};">${text}</div>
           </div>
         </div>
       `;
     } else {
       // 画像なしのレイアウト
       return `
-        <div class="banner-text-only-${size}" style="${borderStyle} background-color: ${bgColor}; font-size: ${fontSize}px;">
+        <div class="banner-text-only-${size}" style="${borderStyle} background-color: ${bgColor}; font-size: ${fontSize}px; color: ${textColor};">
           ${text}
         </div>
       `;
@@ -321,6 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const text = bannerTextInput.value || 'サンプルテキスト';
     const bgColor = bgColorPicker.value;
     const borderColor = borderColorPicker.value;
+    const textColor = textColorPicker.value;
     const fontSize = size === 'small' ? parseInt(textSizeSmall.value) : parseInt(textSizeLarge.value);
     const imagePosition = document.querySelector('input[name="image-position"]:checked').value;
     
@@ -356,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.drawImage(img, imageX, 0, imageSize, imageSize);
         
         // テキストを描画
-        ctx.fillStyle = '#000000';
+        ctx.fillStyle = textColor;
         ctx.font = `bold ${fontSize}px Arial, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -388,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       // 画像なしのバナー
       // テキストを先に描画
-      ctx.fillStyle = '#000000';
+      ctx.fillStyle = textColor;
       ctx.font = `bold ${fontSize}px Arial, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -463,5 +482,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 初期化
   updateBgRGBValue('#ffffff');
   updateBorderRGBValue('#4CAF50');
+  updateTextRGBValue('#000000');
   updatePreview();
 });
