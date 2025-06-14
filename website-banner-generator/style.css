@@ -471,28 +471,14 @@ button:disabled {
   font-weight: bold;
 }
 
-.main-layout {
+.banner-settings-container {
   display: flex;
-  gap: 40px;
-  margin-top: 20px;
-}
-
-.left-column {
-  flex: 1;
-  min-width: 0;
-}
-
-.right-column {
-  flex: 1;
-  min-width: 0;
+  flex-direction: column;
+  gap: 20px;
+  margin: 20px 0;
 }
 
 @media (max-width: 1024px) {
-  .main-layout {
-    flex-direction: column;
-    gap: 20px;
-  }
-  
   .banner-settings {
     flex-direction: column;
     gap: 20px;

@@ -11,130 +11,122 @@
     <h1>ウェブサイトバナージェネレーター</h1>
     <p class="description">文字列と画像からウェブサイトバナーを作成するツール（88x31px・234x60px対応）</p>
     
-    <div class="main-layout">
-      <div class="left-column">
-        <div class="form-group">
-          <label for="banner-text">バナーテキスト</label>
-          <input type="text" id="banner-text" placeholder="バナーに表示するテキストを入力" value="サンプルテキスト">
-        </div>
-        
-        <div class="form-group">
-          <label for="image-upload">画像をアップロード（任意）</label>
-          <input type="file" id="image-upload" accept="image/*">
-        </div>
-        
-        <div id="crop-section" class="crop-container hidden">
-          <h4>画像を正方形に切り抜く</h4>
-          <div class="crop-area" id="crop-area">
-            <img id="crop-image" class="crop-image" src="" alt="切り抜き対象">
-          </div>
-          <div class="crop-controls">
-            <button class="crop-btn" id="crop-confirm">切り抜き確定</button>
-            <button class="crop-btn" id="crop-cancel">キャンセル</button>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label>画像配置位置</label>
-          <div class="position-controls">
-            <label class="radio-label">
-              <input type="radio" name="image-position" value="left" checked>
-              <span>左端</span>
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="image-position" value="right">
-              <span>右端</span>
-            </label>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label>背景色</label>
-          <div class="color-picker-group">
-            <input type="color" class="color-picker" id="bg-color" value="#ffffff">
-          </div>
-          <div class="color-info">
-            <span>RGB: <span id="bg-rgb-value">255, 255, 255</span></span>
-          </div>
-        </div>
-        
-        <hr class="section-divider">
-        
-        <div class="banner-settings-left">
-          <div class="banner-setting-row">
-            <div class="banner-setting-group">
-              <h4>88x31px設定</h4>
-              <div class="form-group">
-                <label>テキストサイズ: <span id="text-size-small-value">8</span>px</label>
-                <input type="range" id="text-size-small" min="6" max="12" value="8" class="size-slider">
-              </div>
-              <div class="form-group">
-                <label>囲み線設定</label>
-                <div class="border-settings">
-                  <div class="border-width-control">
-                    <label for="border-width-small">太さ: <span id="border-width-small-value">2</span>px（0=なし）</label>
-                    <input type="range" id="border-width-small" min="0" max="10" value="2" class="size-slider">
-                  </div>
-                  <div class="color-picker-group">
-                    <input type="color" class="color-picker" id="border-color-small" value="#4CAF50">
-                    <input type="text" class="color-input" id="color-code-small" value="#4CAF50" placeholder="#ffffff">
-                  </div>
-                  <div class="color-info">
-                    <span>RGB: <span id="rgb-value-small">76, 175, 80</span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="banner-preview-section">
-              <h5>88x31px プレビュー</h5>
-              <div id="banner-preview-small" class="banner-preview-individual">
-                <!-- 88x31pxプレビューがここに表示されます -->
-              </div>
-              <button id="download-small" class="download-btn-individual">ダウンロード</button>
-            </div>
-          </div>
-          
-          <div class="banner-setting-row">
-            <div class="banner-setting-group">
-              <h4>234x60px設定</h4>
-              <div class="form-group">
-                <label>テキストサイズ: <span id="text-size-large-value">12</span>px</label>
-                <input type="range" id="text-size-large" min="8" max="20" value="12" class="size-slider">
-              </div>
-              <div class="form-group">
-                <label>囲み線設定</label>
-                <div class="border-settings">
-                  <div class="border-width-control">
-                    <label for="border-width-large">太さ: <span id="border-width-large-value">2</span>px（0=なし）</label>
-                    <input type="range" id="border-width-large" min="0" max="10" value="2" class="size-slider">
-                  </div>
-                  <div class="color-picker-group">
-                    <input type="color" class="color-picker" id="border-color-large" value="#4CAF50">
-                    <input type="text" class="color-input" id="color-code-large" value="#4CAF50" placeholder="#ffffff">
-                  </div>
-                  <div class="color-info">
-                    <span>RGB: <span id="rgb-value-large">76, 175, 80</span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="banner-preview-section">
-              <h5>234x60px プレビュー</h5>
-              <div id="banner-preview-large" class="banner-preview-individual">
-                <!-- 234x60pxプレビューがここに表示されます -->
-              </div>
-              <button id="download-large" class="download-btn-individual">ダウンロード</button>
-            </div>
-          </div>
-        </div>
-        
-        <button id="generate-banner">バナーを生成</button>
+    <div class="form-group">
+      <label for="banner-text">バナーテキスト</label>
+      <input type="text" id="banner-text" placeholder="バナーに表示するテキストを入力" value="サンプルテキスト">
+    </div>
+    
+    <div class="form-group">
+      <label for="image-upload">画像をアップロード（任意）</label>
+      <input type="file" id="image-upload" accept="image/*">
+    </div>
+    
+    <div id="crop-section" class="crop-container hidden">
+      <h4>画像を正方形に切り抜く</h4>
+      <div class="crop-area" id="crop-area">
+        <img id="crop-image" class="crop-image" src="" alt="切り抜き対象">
       </div>
-      
-      <div class="right-column">
-        <!-- 右カラムは将来の拡張用に保持 -->
+      <div class="crop-controls">
+        <button class="crop-btn" id="crop-confirm">切り抜き確定</button>
+        <button class="crop-btn" id="crop-cancel">キャンセル</button>
       </div>
     </div>
+    
+    <div class="form-group">
+      <label>画像配置位置</label>
+      <div class="position-controls">
+        <label class="radio-label">
+          <input type="radio" name="image-position" value="left" checked>
+          <span>左端</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="image-position" value="right">
+          <span>右端</span>
+        </label>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>背景色</label>
+      <div class="color-picker-group">
+        <input type="color" class="color-picker" id="bg-color" value="#ffffff">
+      </div>
+      <div class="color-info">
+        <span>RGB: <span id="bg-rgb-value">255, 255, 255</span></span>
+      </div>
+    </div>
+    
+    <hr class="section-divider">
+    
+    <div class="banner-settings-container">
+      <div class="banner-setting-row">
+        <div class="banner-setting-group">
+          <h4>88x31px設定</h4>
+          <div class="form-group">
+            <label>テキストサイズ: <span id="text-size-small-value">8</span>px</label>
+            <input type="range" id="text-size-small" min="6" max="12" value="8" class="size-slider">
+          </div>
+          <div class="form-group">
+            <label>囲み線設定</label>
+            <div class="border-settings">
+              <div class="border-width-control">
+                <label for="border-width-small">太さ: <span id="border-width-small-value">2</span>px（0=なし）</label>
+                <input type="range" id="border-width-small" min="0" max="10" value="2" class="size-slider">
+              </div>
+              <div class="color-picker-group">
+                <input type="color" class="color-picker" id="border-color-small" value="#4CAF50">
+                <input type="text" class="color-input" id="color-code-small" value="#4CAF50" placeholder="#ffffff">
+              </div>
+              <div class="color-info">
+                <span>RGB: <span id="rgb-value-small">76, 175, 80</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="banner-preview-section">
+          <h5>88x31px プレビュー</h5>
+          <div id="banner-preview-small" class="banner-preview-individual">
+            <!-- 88x31pxプレビューがここに表示されます -->
+          </div>
+          <button id="download-small" class="download-btn-individual">ダウンロード</button>
+        </div>
+      </div>
+      
+      <div class="banner-setting-row">
+        <div class="banner-setting-group">
+          <h4>234x60px設定</h4>
+          <div class="form-group">
+            <label>テキストサイズ: <span id="text-size-large-value">12</span>px</label>
+            <input type="range" id="text-size-large" min="8" max="20" value="12" class="size-slider">
+          </div>
+          <div class="form-group">
+            <label>囲み線設定</label>
+            <div class="border-settings">
+              <div class="border-width-control">
+                <label for="border-width-large">太さ: <span id="border-width-large-value">2</span>px（0=なし）</label>
+                <input type="range" id="border-width-large" min="0" max="10" value="2" class="size-slider">
+              </div>
+              <div class="color-picker-group">
+                <input type="color" class="color-picker" id="border-color-large" value="#4CAF50">
+                <input type="text" class="color-input" id="color-code-large" value="#4CAF50" placeholder="#ffffff">
+              </div>
+              <div class="color-info">
+                <span>RGB: <span id="rgb-value-large">76, 175, 80</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="banner-preview-section">
+          <h5>234x60px プレビュー</h5>
+          <div id="banner-preview-large" class="banner-preview-individual">
+            <!-- 234x60pxプレビューがここに表示されます -->
+          </div>
+          <button id="download-large" class="download-btn-individual">ダウンロード</button>
+        </div>
+      </div>
+    </div>
+    
+    <button id="generate-banner">バナーを生成</button>
     
     <div id="error-message" class="error-message hidden"></div>
   </div>
