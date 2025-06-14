@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgRgbValue = document.getElementById('bg-rgb-value');
   const borderColorPicker = document.getElementById('border-color');
   const borderRgbValue = document.getElementById('border-rgb-value');
-  const generateBannerBtn = document.getElementById('generate-banner');
   const bannerPreviewSmall = document.getElementById('banner-preview-small');
   const bannerPreviewLarge = document.getElementById('banner-preview-large');
   const downloadSmallBtn = document.getElementById('download-small');
@@ -256,9 +255,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // テキスト入力時のプレビュー更新
   bannerTextInput.addEventListener('input', updatePreview);
-  
-  // バナー生成
-  generateBannerBtn.addEventListener('click', updatePreview);
   
   // プレビュー更新
   function updatePreview() {

@@ -490,10 +490,12 @@ button:disabled {
   .banner-preview-section {
     flex: none;
     max-width: none;
+    width: 100%;
   }
   
   .banner-setting-group {
     max-width: none;
+    width: 100%;
   }
 }
 
