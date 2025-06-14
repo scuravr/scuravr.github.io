@@ -18,16 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // 88x31px用の設定
   const borderWidthSmall = document.getElementById('border-width-small');
   const borderWidthSmallValue = document.getElementById('border-width-small-value');
-  const borderColorSmall = document.getElementById('border-color-small');
-  const rgbValueSmall = document.getElementById('rgb-value-small');
   
   // 234x60px用の設定
   const borderWidthLarge = document.getElementById('border-width-large');
   const borderWidthLargeValue = document.getElementById('border-width-large-value');
-  const borderColorLarge = document.getElementById('border-color-large');
-  const rgbValueLarge = document.getElementById('rgb-value-large');
+  
+  // 共通設定
   const bgColorPicker = document.getElementById('bg-color');
   const bgRgbValue = document.getElementById('bg-rgb-value');
+  const borderColorPicker = document.getElementById('border-color');
+  const borderRgbValue = document.getElementById('border-rgb-value');
   const generateBannerBtn = document.getElementById('generate-banner');
   const bannerPreviewSmall = document.getElementById('banner-preview-small');
   const bannerPreviewLarge = document.getElementById('banner-preview-large');
@@ -79,20 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePreview();
   });
   
-  // 88x31px用カラーピッカー
-  borderColorSmall.addEventListener('input', (e) => {
-    const color = e.target.value;
-    updateRGBValueSmall(color);
-    updatePreview();
-  });
-  
-  // 234x60px用カラーピッカー
-  borderColorLarge.addEventListener('input', (e) => {
-    const color = e.target.value;
-    updateRGBValueLarge(color);
-    updatePreview();
-  });
-  
   // 背景色のカラーピッカー
   bgColorPicker.addEventListener('input', (e) => {
     const color = e.target.value;
@@ -100,21 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePreview();
   });
   
-  // 88x31px用RGB値を更新
-  function updateRGBValueSmall(hex) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    rgbValueSmall.textContent = `${r}, ${g}, ${b}`;
-  }
-  
-  // 234x60px用RGB値を更新
-  function updateRGBValueLarge(hex) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    rgbValueLarge.textContent = `${r}, ${g}, ${b}`;
-  }
+  // 囲み線色のカラーピッカー
+  borderColorPicker.addEventListener('input', (e) => {
+    const color = e.target.value;
+    updateBorderRGBValue(color);
+    updatePreview();
+  });
   
   // 背景色のRGB値を更新
   function updateBgRGBValue(hex) {
@@ -122,6 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
     bgRgbValue.textContent = `${r}, ${g}, ${b}`;
+  }
+  
+  // 囲み線色のRGB値を更新
+  function updateBorderRGBValue(hex) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    borderRgbValue.textContent = `${r}, ${g}, ${b}`;
   }
   
   
@@ -279,21 +264,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function updatePreview() {
     const text = bannerTextInput.value || 'サンプルテキスト';
     const bgColor = bgColorPicker.value;
+    const borderColor = borderColorPicker.value;
     const smallTextSize = textSizeSmall.value;
     const largeTextSize = textSizeLarge.value;
     const imagePosition = document.querySelector('input[name="image-position"]:checked').value;
     
     // 各サイズ別の設定を取得
     const smallBorderWidth = parseInt(borderWidthSmall.value);
-    const smallBorderColor = borderColorSmall.value;
     const largeBorderWidth = parseInt(borderWidthLarge.value);
-    const largeBorderColor = borderColorLarge.value;
     
     // 88x31px個別プレビュー更新
-    bannerPreviewSmall.innerHTML = generateBannerHTML(text, smallBorderWidth, smallBorderColor, bgColor, 'small', smallTextSize, imagePosition);
+    bannerPreviewSmall.innerHTML = generateBannerHTML(text, smallBorderWidth, borderColor, bgColor, 'small', smallTextSize, imagePosition);
     
     // 234x60px個別プレビュー更新
-    bannerPreviewLarge.innerHTML = generateBannerHTML(text, largeBorderWidth, largeBorderColor, bgColor, 'large', largeTextSize, imagePosition);
+    bannerPreviewLarge.innerHTML = generateBannerHTML(text, largeBorderWidth, borderColor, bgColor, 'large', largeTextSize, imagePosition);
   }
   
   // バナーHTML生成
@@ -340,12 +324,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     const text = bannerTextInput.value || 'サンプルテキスト';
     const bgColor = bgColorPicker.value;
+    const borderColor = borderColorPicker.value;
     const fontSize = size === 'small' ? parseInt(textSizeSmall.value) : parseInt(textSizeLarge.value);
     const imagePosition = document.querySelector('input[name="image-position"]:checked').value;
     
     // サイズ別の囲み線設定を取得
     const borderWidthPx = size === 'small' ? parseInt(borderWidthSmall.value) : parseInt(borderWidthLarge.value);
-    const borderColor = size === 'small' ? borderColorSmall.value : borderColorLarge.value;
     
     canvas.width = width;
     canvas.height = height;
@@ -472,8 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // 初期化
-  updateRGBValueSmall('#4CAF50');
-  updateRGBValueLarge('#4CAF50');
   updateBgRGBValue('#ffffff');
+  updateBorderRGBValue('#4CAF50');
   updatePreview();
 });

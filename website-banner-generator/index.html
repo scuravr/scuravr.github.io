@@ -61,6 +61,16 @@
       </div>
     </div>
     
+    <div class="form-group">
+      <label>囲み線色</label>
+      <div class="color-picker-group">
+        <input type="color" class="color-picker" id="border-color" value="#4CAF50">
+      </div>
+      <div class="color-info">
+        <span>RGB: <span id="border-rgb-value">76, 175, 80</span></span>
+      </div>
+    </div>
+    
     <hr class="section-divider">
     
     <div class="banner-settings-container">
@@ -72,19 +82,8 @@
             <input type="range" id="text-size-small" min="6" max="12" value="8" class="size-slider">
           </div>
           <div class="form-group">
-            <label>囲み線設定</label>
-            <div class="border-settings">
-              <div class="border-width-control">
-                <label for="border-width-small">太さ: <span id="border-width-small-value">2</span>px（0=なし）</label>
-                <input type="range" id="border-width-small" min="0" max="10" value="2" class="size-slider">
-              </div>
-              <div class="color-picker-group">
-                <input type="color" class="color-picker" id="border-color-small" value="#4CAF50">
-              </div>
-              <div class="color-info">
-                <span>RGB: <span id="rgb-value-small">76, 175, 80</span></span>
-              </div>
-            </div>
+            <label>囲み線太さ: <span id="border-width-small-value">2</span>px（0=なし）</label>
+            <input type="range" id="border-width-small" min="0" max="10" value="2" class="size-slider">
           </div>
         </div>
         <div class="banner-preview-section">
@@ -104,19 +103,8 @@
             <input type="range" id="text-size-large" min="8" max="20" value="12" class="size-slider">
           </div>
           <div class="form-group">
-            <label>囲み線設定</label>
-            <div class="border-settings">
-              <div class="border-width-control">
-                <label for="border-width-large">太さ: <span id="border-width-large-value">2</span>px（0=なし）</label>
-                <input type="range" id="border-width-large" min="0" max="10" value="2" class="size-slider">
-              </div>
-              <div class="color-picker-group">
-                <input type="color" class="color-picker" id="border-color-large" value="#4CAF50">
-              </div>
-              <div class="color-info">
-                <span>RGB: <span id="rgb-value-large">76, 175, 80</span></span>
-              </div>
-            </div>
+            <label>囲み線太さ: <span id="border-width-large-value">2</span>px（0=なし）</label>
+            <input type="range" id="border-width-large" min="0" max="10" value="2" class="size-slider">
           </div>
         </div>
         <div class="banner-preview-section">
