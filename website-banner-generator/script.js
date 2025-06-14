@@ -16,14 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const borderWidthSmall = document.getElementById('border-width-small');
   const borderWidthSmallValue = document.getElementById('border-width-small-value');
   const borderColorSmall = document.getElementById('border-color-small');
-  const colorCodeSmall = document.getElementById('color-code-small');
   const rgbValueSmall = document.getElementById('rgb-value-small');
   
   // 234x60px用の設定
   const borderWidthLarge = document.getElementById('border-width-large');
   const borderWidthLargeValue = document.getElementById('border-width-large-value');
   const borderColorLarge = document.getElementById('border-color-large');
-  const colorCodeLarge = document.getElementById('color-code-large');
   const rgbValueLarge = document.getElementById('rgb-value-large');
   const bgColorPicker = document.getElementById('bg-color');
   const bgRgbValue = document.getElementById('bg-rgb-value');
@@ -68,78 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePreview();
   });
   
-  // 88x31px用カラーピッカーとカラーコード入力の同期
+  // 88x31px用カラーピッカー
   borderColorSmall.addEventListener('input', (e) => {
     const color = e.target.value;
-    colorCodeSmall.value = color.toUpperCase();
     updateRGBValueSmall(color);
     updatePreview();
   });
   
-  colorCodeSmall.addEventListener('input', (e) => {
-    let color = e.target.value.trim();
-    
-    // #を自動で追加
-    if (color && !color.startsWith('#')) {
-      color = '#' + color;
-      e.target.value = color;
-    }
-    
-    if (isValidHexColor(color)) {
-      borderColorSmall.value = color;
-      updateRGBValueSmall(color);
-      updatePreview();
-    }
-  });
-  
-  colorCodeSmall.addEventListener('blur', (e) => {
-    let color = e.target.value.trim();
-    if (color && !color.startsWith('#')) {
-      color = '#' + color;
-      e.target.value = color;
-    }
-    if (isValidHexColor(color)) {
-      borderColorSmall.value = color;
-      updateRGBValueSmall(color);
-      updatePreview();
-    }
-  });
-  
-  // 234x60px用カラーピッカーとカラーコード入力の同期
+  // 234x60px用カラーピッカー
   borderColorLarge.addEventListener('input', (e) => {
     const color = e.target.value;
-    colorCodeLarge.value = color.toUpperCase();
     updateRGBValueLarge(color);
     updatePreview();
-  });
-  
-  colorCodeLarge.addEventListener('input', (e) => {
-    let color = e.target.value.trim();
-    
-    // #を自動で追加
-    if (color && !color.startsWith('#')) {
-      color = '#' + color;
-      e.target.value = color;
-    }
-    
-    if (isValidHexColor(color)) {
-      borderColorLarge.value = color;
-      updateRGBValueLarge(color);
-      updatePreview();
-    }
-  });
-  
-  colorCodeLarge.addEventListener('blur', (e) => {
-    let color = e.target.value.trim();
-    if (color && !color.startsWith('#')) {
-      color = '#' + color;
-      e.target.value = color;
-    }
-    if (isValidHexColor(color)) {
-      borderColorLarge.value = color;
-      updateRGBValueLarge(color);
-      updatePreview();
-    }
   });
   
   // 背景色のカラーピッカー
@@ -173,10 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
     bgRgbValue.textContent = `${r}, ${g}, ${b}`;
   }
   
-  // 有効な16進数カラーコードかチェック
-  function isValidHexColor(hex) {
-    return /^#[0-9A-F]{6}$/i.test(hex);
-  }
   
   // 画像アップロード処理
   imageUpload.addEventListener('change', (e) => {
