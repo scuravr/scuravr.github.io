@@ -338,19 +338,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // 囲み線を描画（太さが0より大きい場合のみ）
-    if (borderWidthPx > 0) {
-      ctx.strokeStyle = borderColor;
-      ctx.lineWidth = borderWidthPx;
-      const offset = borderWidthPx / 2;
-      ctx.strokeRect(offset, offset, canvas.width - borderWidthPx, canvas.height - borderWidthPx);
-    }
-    
     if (croppedImage) {
       // 画像ありのバナー
       const img = new Image();
       img.onload = () => {
-        // 画像を正方形で描画（囲み線ギリギリまで）
+        // 画像を正方形で描画（囲み線の下に）
         const imageSize = height; // バナーの高さと同じサイズ
         let imageX, textX;
         
@@ -364,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
           textX = imageSize + (width - imageSize) / 2;
         }
         
-        // 画像を正方形として描画（囲み線と重なるように）
+        // 画像を正方形として描画
         ctx.drawImage(img, imageX, 0, imageSize, imageSize);
         
         // テキストを描画
@@ -386,11 +378,20 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.fillText(line, textX, startY + index * lineHeight);
         });
         
+        // 囲み線を描画（画像とテキストより上に表示）
+        if (borderWidthPx > 0) {
+          ctx.strokeStyle = borderColor;
+          ctx.lineWidth = borderWidthPx;
+          const offset = borderWidthPx / 2;
+          ctx.strokeRect(offset, offset, canvas.width - borderWidthPx, canvas.height - borderWidthPx);
+        }
+        
         downloadCanvasAsPNG(canvas, filename);
       };
       img.src = croppedImage;
     } else {
       // 画像なしのバナー
+      // テキストを先に描画
       ctx.fillStyle = '#000000';
       ctx.font = `bold ${fontSize}px Arial, sans-serif`;
       ctx.textAlign = 'center';
@@ -405,6 +406,14 @@ document.addEventListener('DOMContentLoaded', () => {
       lines.forEach((line, index) => {
         ctx.fillText(line, width / 2, startY + index * lineHeight);
       });
+      
+      // 囲み線を描画（テキストより上に表示）
+      if (borderWidthPx > 0) {
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = borderWidthPx;
+        const offset = borderWidthPx / 2;
+        ctx.strokeRect(offset, offset, canvas.width - borderWidthPx, canvas.height - borderWidthPx);
+      }
       
       downloadCanvasAsPNG(canvas, filename);
     }
