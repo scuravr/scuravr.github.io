@@ -27,8 +27,13 @@
         <img id="crop-image" class="crop-image" src="" alt="切り抜き対象">
       </div>
       <div class="crop-controls">
-        <button class="crop-btn" id="crop-confirm">切り抜き確定</button>
-        <button class="crop-btn" id="crop-cancel">キャンセル</button>
+        <label for="image-scale">拡大縮小: <span id="scale-value">100</span>%</label>
+        <input type="range" id="image-scale" min="50" max="200" value="100" class="size-slider">
+        <button class="crop-btn" id="center-image">中央配置</button>
+        <div style="display: flex; gap: 10px;">
+          <button class="crop-btn" id="crop-confirm">切り抜き確定</button>
+          <button class="crop-btn" id="crop-cancel">キャンセル</button>
+        </div>
       </div>
     </div>
     

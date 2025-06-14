@@ -259,9 +259,25 @@ button:disabled {
 
 .crop-controls {
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  justify-content: center;
+  align-items: center;
   margin-top: 10px;
+}
+
+.crop-controls label {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.crop-controls input[type="range"] {
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+.crop-controls .crop-btn {
+  display: inline-block;
+  margin: 0 5px;
 }
 
 .crop-btn {

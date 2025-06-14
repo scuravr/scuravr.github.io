@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const cropImage = document.getElementById('crop-image');
   const cropConfirm = document.getElementById('crop-confirm');
   const cropCancel = document.getElementById('crop-cancel');
+  const centerImageBtn = document.getElementById('center-image');
+  const imageScale = document.getElementById('image-scale');
+  const scaleValue = document.getElementById('scale-value');
   const textSizeSmall = document.getElementById('text-size-small');
   const textSizeLarge = document.getElementById('text-size-large');
   const textSizeSmallValue = document.getElementById('text-size-small-value');
@@ -37,6 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let cropPosition = { x: 0, y: 0 };
   let isDragging = false;
   let dragStart = { x: 0, y: 0 };
+  let baseImageSize = { width: 0, height: 0 };
+  let currentScale = 1;
   
   // テキストサイズスライダーの処理
   textSizeSmall.addEventListener('input', (e) => {
@@ -52,6 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // 画像配置位置の処理
   imagePositionRadios.forEach(radio => {
     radio.addEventListener('change', updatePreview);
+  });
+  
+  // 画像拡大縮小スライダーの処理
+  imageScale.addEventListener('input', (e) => {
+    const scalePercent = e.target.value;
+    scaleValue.textContent = scalePercent;
+    currentScale = scalePercent / 100;
+    updateImageScale();
   });
   
   // 88x31px用囲み線の太さスライダーの処理
@@ -130,20 +143,26 @@ document.addEventListener('DOMContentLoaded', () => {
     cropImage.src = currentImage;
     cropSection.classList.remove('hidden');
     
+    // スケールスライダーを初期化
+    imageScale.value = 100;
+    scaleValue.textContent = '100';
+    currentScale = 1;
+    
     cropImage.onload = () => {
       const imgWidth = cropImage.naturalWidth;
       const imgHeight = cropImage.naturalHeight;
       const containerSize = 300;
       
-      // 画像を切り抜きエリアに合わせてスケール
-      const scale = Math.max(containerSize / imgWidth, containerSize / imgHeight);
-      cropImage.style.width = `${imgWidth * scale}px`;
-      cropImage.style.height = `${imgHeight * scale}px`;
+      // ベースサイズを計算（最小サイズでエリア全体をカバー）
+      const baseScale = Math.max(containerSize / imgWidth, containerSize / imgHeight);
+      baseImageSize.width = imgWidth * baseScale;
+      baseImageSize.height = imgHeight * baseScale;
+      
+      // 初期スケールを適用
+      updateImageScale();
       
       // 初期位置を中央に
-      cropPosition.x = (containerSize - imgWidth * scale) / 2;
-      cropPosition.y = (containerSize - imgHeight * scale) / 2;
-      updateCropImagePosition();
+      centerImage();
     };
   }
   
@@ -151,6 +170,28 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCropImagePosition() {
     cropImage.style.left = `${cropPosition.x}px`;
     cropImage.style.top = `${cropPosition.y}px`;
+  }
+  
+  // 画像のスケールを更新
+  function updateImageScale() {
+    const scaledWidth = baseImageSize.width * currentScale;
+    const scaledHeight = baseImageSize.height * currentScale;
+    
+    cropImage.style.width = `${scaledWidth}px`;
+    cropImage.style.height = `${scaledHeight}px`;
+    
+    updateCropImagePosition();
+  }
+  
+  // 画像を中央に配置
+  function centerImage() {
+    const containerSize = 300;
+    const scaledWidth = baseImageSize.width * currentScale;
+    const scaledHeight = baseImageSize.height * currentScale;
+    
+    cropPosition.x = (containerSize - scaledWidth) / 2;
+    cropPosition.y = (containerSize - scaledHeight) / 2;
+    updateCropImagePosition();
   }
   
   // 切り抜きエリアでのドラッグ処理
@@ -185,6 +226,11 @@ document.addEventListener('DOMContentLoaded', () => {
     imageUpload.value = '';
   });
   
+  // 画像を中央配置
+  centerImageBtn.addEventListener('click', () => {
+    centerImage();
+  });
+  
   // 画像を正方形に切り抜く
   function cropImageToSquare() {
     const canvas = document.createElement('canvas');
@@ -197,14 +243,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const img = new Image();
     img.onload = () => {
       const containerSize = 300;
-      const scale = Math.max(containerSize / img.width, containerSize / img.height);
-      const scaledWidth = img.width * scale;
-      const scaledHeight = img.height * scale;
+      const imgWidth = img.naturalWidth;
+      const imgHeight = img.naturalHeight;
       
-      // 切り抜き位置を計算
-      const sourceX = -cropPosition.x / scale;
-      const sourceY = -cropPosition.y / scale;
-      const sourceSize = containerSize / scale;
+      // ベースサイズを計算
+      const baseScale = Math.max(containerSize / imgWidth, containerSize / imgHeight);
+      // 現在のスケールを適用したサイズ
+      const actualScale = baseScale * currentScale;
+      
+      // 切り抜き位置を計算（元画像での座標に変換）
+      const sourceX = -cropPosition.x / actualScale;
+      const sourceY = -cropPosition.y / actualScale;
+      const sourceSize = containerSize / actualScale;
       
       ctx.drawImage(
         img,
