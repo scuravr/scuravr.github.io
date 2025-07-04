@@ -155,6 +155,18 @@
       "prefix": "782",
       "identifier": "edbb2bb2-fa28-11ef-8cbc-6f97f0d24f36",
       "mantela": "https://www.scrwnl.eu.org/.well-known/mantela.json"
+    },
+    {
+      "name": "tkytel-8931(891)",
+      "prefix": "891",
+      "identifier": "530251dc-0f93-4226-89c8-d71f900a1f0b",
+      "mantela": "https://tkytel-8931.f5.si/.well-known/mantela.json"
+    },
+    {
+      "name": "zin3",
+      "prefix": "333",
+      "identifier": "498a3211-0f85-42a7-b2c0-44fb7095bd67",
+      "mantela": "https://zin3.cc/.well-known/mantela.json"
     }
   ]
 }
