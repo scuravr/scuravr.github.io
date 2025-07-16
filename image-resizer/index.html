@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画像リサイズツール</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>画像リサイズツール</h1>
+        
+        <div class="settings">
+            <div class="setting-group">
+                <h3>基準設定</h3>
+                <div class="size-mode">
+                    <button class="mode-btn active" data-mode="width">横幅基準</button>
+                    <button class="mode-btn" data-mode="height">縦幅基準</button>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <h3>サイズ設定</h3>
+                <div class="size-inputs">
+                    <input type="number" class="size-input" id="customSize" placeholder="ピクセル数を入力" min="1">
+                    <button class="add-size-btn" onclick="addCustomSize()">追加</button>
+                </div>
+                <div class="size-tags" id="sizeTags">
+                    <div class="size-tag" data-size="140">140px <span class="remove" onclick="removeSize(140)">×</span></div>
+                    <div class="size-tag" data-size="300">300px <span class="remove" onclick="removeSize(300)">×</span></div>
+                    <div class="size-tag" data-size="930">930px <span class="remove" onclick="removeSize(930)">×</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+            <div class="drop-zone-icon">📁</div>
+            <h3>画像をドラッグ＆ドロップ</h3>
+            <p>または、クリックしてファイルを選択</p>
+            <p style="font-size: 0.9em; color: #999; margin-top: 10px;">対応形式: JPG, PNG, WEBP</p>
+        </div>
+
+        <input type="file" id="fileInput" class="file-input" multiple accept="image/*">
+
+        <div class="progress-bar" id="progressBar" style="display: none;">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="results" id="results"></div>
+        
+        <div class="nav-link">
+            <a href="../index.html">← ホームに戻る</a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
