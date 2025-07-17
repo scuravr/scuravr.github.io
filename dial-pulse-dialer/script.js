@@ -4,7 +4,7 @@ class DialPulseDialer {
         this.currentAudio = null;
         this.isPlaying = false;
         this.inputNumber = '';
-        this.pulseMode = '10';
+        this.pulseMode = 'dtmf';
         this.sampleRate = 8000;
         
         // DTMF周波数テーブル
@@ -222,19 +222,18 @@ class DialPulseDialer {
         const basePulseCount = digit === 0 ? 10 : digit;
         const pulseCount = this.pulseMode === '20' ? basePulseCount * 2 : basePulseCount;
         
-        // FSK変調によるダイヤルパルス生成
-        return this.generateFSKDialPulse(digit, pulseCount);
+        // 音響カプラ用のダイヤルパルス生成
+        return this.generateAcousticDialPulse(digit, pulseCount);
     }
     
-    generateFSKDialPulse(digit, pulseCount) {
-        // FSK変調パラメータ
-        const markFreq = 1200;    // Mark信号周波数（パルス有り）
-        const spaceFreq = 2200;   // Space信号周波数（パルス無し）
-        const amplitude = 0.8;    // 高音量
+    generateAcousticDialPulse(digit, pulseCount) {
+        // 音響カプラ用パラメータ
+        const carrierFreq = 1000; // キャリア周波数 1000Hz
+        const amplitude = 0.9;    // 高音量（最大近く）
         
-        // タイミング設定（カーボンマイク対応で最適化）
-        const makeTime = 0.04;    // 40ms - Mark信号持続時間
-        const breakTime = 0.06;   // 60ms - Space信号持続時間
+        // タイミング設定
+        const makeTime = 0.04;    // 40ms - パルス音持続時間
+        const breakTime = 0.06;   // 60ms - 無音期間
         const interDigit = 0.7;   // 700ms - 数字間間隔
         
         // 20ppsの場合は時間を半分にする
@@ -244,32 +243,39 @@ class DialPulseDialer {
         let signal = [];
         
         for (let i = 0; i < pulseCount; i++) {
-            // Mark信号（パルス有り）- 1200Hz正弦波
+            // パルス音（キャリア周波数での短時間トーン）
             const makeSamples = Math.floor(this.sampleRate * actualMakeTime);
+            const pulseSignal = [];
+            
             for (let j = 0; j < makeSamples; j++) {
                 const t = j / this.sampleRate;
-                const sample = Math.sin(2 * Math.PI * markFreq * t) * amplitude;
-                signal.push(sample);
+                // エンベロープ付きの正弦波
+                let envelope = 1.0;
+                
+                // 短時間での急激な立ち上がり・立ち下がり
+                const rampSamples = Math.floor(makeSamples * 0.1); // 10%の時間
+                if (j < rampSamples) {
+                    envelope = j / rampSamples;
+                } else if (j > makeSamples - rampSamples) {
+                    envelope = (makeSamples - j) / rampSamples;
+                }
+                
+                const sample = Math.sin(2 * Math.PI * carrierFreq * t) * amplitude * envelope;
+                pulseSignal.push(sample);
             }
             
-            // Space信号（パルス無し）- 2200Hz正弦波
+            signal = signal.concat(pulseSignal);
+            
+            // 無音期間（最後のパルス以外）
             if (i < pulseCount - 1) {
                 const breakSamples = Math.floor(this.sampleRate * actualBreakTime);
-                for (let j = 0; j < breakSamples; j++) {
-                    const t = j / this.sampleRate;
-                    const sample = Math.sin(2 * Math.PI * spaceFreq * t) * amplitude;
-                    signal.push(sample);
-                }
+                signal = signal.concat(new Array(breakSamples).fill(0));
             }
         }
         
-        // 数字間間隔（Space信号を継続）
+        // 数字間間隔（完全な無音）
         const interSamples = Math.floor(this.sampleRate * interDigit);
-        for (let j = 0; j < interSamples; j++) {
-            const t = j / this.sampleRate;
-            const sample = Math.sin(2 * Math.PI * spaceFreq * t) * amplitude * 0.3; // 少し音量を下げる
-            signal.push(sample);
-        }
+        signal = signal.concat(new Array(interSamples).fill(0));
         
         return signal;
     }
