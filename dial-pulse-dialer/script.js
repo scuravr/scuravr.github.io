@@ -222,10 +222,20 @@ class DialPulseDialer {
         const basePulseCount = digit === 0 ? 10 : digit;
         const pulseCount = this.pulseMode === '20' ? basePulseCount * 2 : basePulseCount;
         
-        // タイミング設定
-        const makeTime = 0.04;    // 40ms - 音の持続時間
-        const breakTime = 0.06;   // 60ms - 無音時間
-        const interDigit = 0.6;   // 600ms - 数字間間隔
+        // FSK変調によるダイヤルパルス生成
+        return this.generateFSKDialPulse(digit, pulseCount);
+    }
+    
+    generateFSKDialPulse(digit, pulseCount) {
+        // FSK変調パラメータ
+        const markFreq = 1200;    // Mark信号周波数（パルス有り）
+        const spaceFreq = 2200;   // Space信号周波数（パルス無し）
+        const amplitude = 0.8;    // 高音量
+        
+        // タイミング設定（カーボンマイク対応で最適化）
+        const makeTime = 0.04;    // 40ms - Mark信号持続時間
+        const breakTime = 0.06;   // 60ms - Space信号持続時間
+        const interDigit = 0.7;   // 700ms - 数字間間隔
         
         // 20ppsの場合は時間を半分にする
         const actualMakeTime = this.pulseMode === '20' ? makeTime / 2 : makeTime;
@@ -234,52 +244,32 @@ class DialPulseDialer {
         let signal = [];
         
         for (let i = 0; i < pulseCount; i++) {
-            // カーボンマイク対応の強い方形波クリック音を生成
-            const clickSamples = Math.floor(this.sampleRate * actualMakeTime);
-            let click = [];
-            
-            // 低周波数の方形波を生成（500Hz-1000Hz帯域）
-            const frequency1 = 500;  // 基本周波数
-            const frequency2 = 1000; // 倍音
-            const amplitude = 0.4;   // 音量を大幅に増加
-            
-            for (let j = 0; j < clickSamples; j++) {
+            // Mark信号（パルス有り）- 1200Hz正弦波
+            const makeSamples = Math.floor(this.sampleRate * actualMakeTime);
+            for (let j = 0; j < makeSamples; j++) {
                 const t = j / this.sampleRate;
-                // 2つの方形波を合成
-                const wave1 = Math.sign(Math.sin(2 * Math.PI * frequency1 * t)) * amplitude;
-                const wave2 = Math.sign(Math.sin(2 * Math.PI * frequency2 * t)) * amplitude * 0.3;
-                click.push(wave1 + wave2);
+                const sample = Math.sin(2 * Math.PI * markFreq * t) * amplitude;
+                signal.push(sample);
             }
             
-            // 矩形波的エンベロープ（急激な立ち上がり・立ち下がり）
-            const envelopeLength = Math.floor(clickSamples * 0.02); // 非常に短い立ち上がり
-            
-            // 立ち上がり（急激）
-            for (let j = 0; j < envelopeLength; j++) {
-                click[j] *= j / envelopeLength;
-            }
-            
-            // 立ち下がり（急激）
-            for (let j = 0; j < envelopeLength; j++) {
-                const index = clickSamples - 1 - j;
-                click[index] *= j / envelopeLength;
-            }
-            
-            // クリック音を信号に追加
-            signal = signal.concat(click);
-            
-            // 無音期間（最後のパルス以外）
+            // Space信号（パルス無し）- 2200Hz正弦波
             if (i < pulseCount - 1) {
-                const silenceSamples = Math.floor(this.sampleRate * actualBreakTime);
-                const silence = new Array(silenceSamples).fill(0);
-                signal = signal.concat(silence);
+                const breakSamples = Math.floor(this.sampleRate * actualBreakTime);
+                for (let j = 0; j < breakSamples; j++) {
+                    const t = j / this.sampleRate;
+                    const sample = Math.sin(2 * Math.PI * spaceFreq * t) * amplitude;
+                    signal.push(sample);
+                }
             }
         }
         
-        // 数字間間隔
+        // 数字間間隔（Space信号を継続）
         const interSamples = Math.floor(this.sampleRate * interDigit);
-        const interSilence = new Array(interSamples).fill(0);
-        signal = signal.concat(interSilence);
+        for (let j = 0; j < interSamples; j++) {
+            const t = j / this.sampleRate;
+            const sample = Math.sin(2 * Math.PI * spaceFreq * t) * amplitude * 0.3; // 少し音量を下げる
+            signal.push(sample);
+        }
         
         return signal;
     }
