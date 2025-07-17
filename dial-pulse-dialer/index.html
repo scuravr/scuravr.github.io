@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ダイヤルパルス発信器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ダイヤルパルス発信器</h1>
+        
+        <div class="input-section">
+            <input type="text" id="numberInput" placeholder="電話番号を入力" maxlength="128" readonly>
+            <button id="resetBtn" class="btn btn-reset">リセット</button>
+        </div>
+        
+        <div class="pulse-mode-section">
+            <label>発信方式:</label>
+            <div class="radio-group">
+                <input type="radio" id="pulse10" name="pulseMode" value="10" checked>
+                <label for="pulse10">10パルス</label>
+                <input type="radio" id="pulse20" name="pulseMode" value="20">
+                <label for="pulse20">20パルス</label>
+                <input type="radio" id="dtmf" name="pulseMode" value="dtmf">
+                <label for="dtmf">DTMF</label>
+            </div>
+        </div>
+        
+        <div class="keypad">
+            <div class="key-row">
+                <button class="key-btn" data-number="1">1</button>
+                <button class="key-btn" data-number="2">2</button>
+                <button class="key-btn" data-number="3">3</button>
+            </div>
+            <div class="key-row">
+                <button class="key-btn" data-number="4">4</button>
+                <button class="key-btn" data-number="5">5</button>
+                <button class="key-btn" data-number="6">6</button>
+            </div>
+            <div class="key-row">
+                <button class="key-btn" data-number="7">7</button>
+                <button class="key-btn" data-number="8">8</button>
+                <button class="key-btn" data-number="9">9</button>
+            </div>
+            <div class="key-row">
+                <button class="key-btn" data-number="*">*</button>
+                <button class="key-btn" data-number="0">0</button>
+                <button class="key-btn" data-number="#">#</button>
+            </div>
+        </div>
+        
+        <div class="control-section">
+            <button id="playBtn" class="btn btn-play">音響再生</button>
+            <button id="stopBtn" class="btn btn-stop">停止</button>
+        </div>
+        
+        <div class="status-section">
+            <p id="statusText">待機中...</p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
