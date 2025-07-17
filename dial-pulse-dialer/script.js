@@ -234,28 +234,32 @@ class DialPulseDialer {
         let signal = [];
         
         for (let i = 0; i < pulseCount; i++) {
-            // クリック音生成（短時間のノイズバースト）
+            // カーボンマイク対応の強い方形波クリック音を生成
             const clickSamples = Math.floor(this.sampleRate * actualMakeTime);
             let click = [];
             
-            // ノイズ生成（正規分布近似）
+            // 低周波数の方形波を生成（500Hz-1000Hz帯域）
+            const frequency1 = 500;  // 基本周波数
+            const frequency2 = 1000; // 倍音
+            const amplitude = 0.4;   // 音量を大幅に増加
+            
             for (let j = 0; j < clickSamples; j++) {
-                // Box-Muller変換で正規分布近似
-                const u1 = Math.random();
-                const u2 = Math.random();
-                const z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-                click.push(z0 * 0.1); // 標準偏差0.1
+                const t = j / this.sampleRate;
+                // 2つの方形波を合成
+                const wave1 = Math.sign(Math.sin(2 * Math.PI * frequency1 * t)) * amplitude;
+                const wave2 = Math.sign(Math.sin(2 * Math.PI * frequency2 * t)) * amplitude * 0.3;
+                click.push(wave1 + wave2);
             }
             
-            // エンベロープ適用（急激な立ち上がり/立ち下がり）
-            const envelopeLength = Math.floor(clickSamples * 0.1);
+            // 矩形波的エンベロープ（急激な立ち上がり・立ち下がり）
+            const envelopeLength = Math.floor(clickSamples * 0.02); // 非常に短い立ち上がり
             
-            // 立ち上がり
+            // 立ち上がり（急激）
             for (let j = 0; j < envelopeLength; j++) {
                 click[j] *= j / envelopeLength;
             }
             
-            // 立ち下がり
+            // 立ち下がり（急激）
             for (let j = 0; j < envelopeLength; j++) {
                 const index = clickSamples - 1 - j;
                 click[index] *= j / envelopeLength;
@@ -316,9 +320,9 @@ class DialPulseDialer {
                 await this.generateDTMFTone(char);
             }
             
-            // 文字間間隔（100ms）
+            // 文字間間隔（150ms）
             if (i < this.inputNumber.length - 1) {
-                await this.delay(100);
+                await this.delay(150);
             }
         }
     }
@@ -327,7 +331,7 @@ class DialPulseDialer {
         const frequencies = this.dtmfFrequencies[character];
         if (!frequencies) return;
         
-        const duration = 200; // 200ms
+        const duration = 350; // 350msに延長（カーボンマイク対応）
         
         await this.playDualTone(frequencies[0], frequencies[1], duration);
     }
@@ -348,14 +352,21 @@ class DialPulseDialer {
         oscillator1.type = 'sine';
         oscillator2.type = 'sine';
         
-        // 音量設定
-        gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration / 1000);
+        // カーボンマイク対応の矩形波的エンベロープと高音量
+        const startTime = this.audioContext.currentTime;
+        const endTime = startTime + duration / 1000;
+        const amplitude = 0.5; // 音量を大幅に増加
         
-        oscillator1.start(this.audioContext.currentTime);
-        oscillator2.start(this.audioContext.currentTime);
-        oscillator1.stop(this.audioContext.currentTime + duration / 1000);
-        oscillator2.stop(this.audioContext.currentTime + duration / 1000);
+        // 矩形波的エンベロープ（急激な立ち上がり・立ち下がり）
+        gainNode.gain.setValueAtTime(0, startTime);
+        gainNode.gain.linearRampToValueAtTime(amplitude, startTime + 0.01); // 10ms で急激に立ち上がり
+        gainNode.gain.setValueAtTime(amplitude, endTime - 0.01); // 持続
+        gainNode.gain.linearRampToValueAtTime(0, endTime); // 10ms で急激に立ち下がり
+        
+        oscillator1.start(startTime);
+        oscillator2.start(startTime);
+        oscillator1.stop(endTime);
+        oscillator2.stop(endTime);
         
         this.currentAudio = oscillator1;
         
