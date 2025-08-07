@@ -256,6 +256,20 @@ function displayResults() {
     const resultsContainer = document.getElementById('results');
     resultsContainer.innerHTML = '';
 
+    if (processedImages.length > 1) {
+        const bulkDownloadDiv = document.createElement('div');
+        bulkDownloadDiv.className = 'bulk-download-section';
+        bulkDownloadDiv.innerHTML = `
+            <div class="bulk-download-header">
+                <h3>一括ダウンロード</h3>
+                <button class="bulk-download-btn" onclick="downloadAllImagesAsZip()">
+                    すべての画像を一つのZIPでダウンロード
+                </button>
+            </div>
+        `;
+        resultsContainer.appendChild(bulkDownloadDiv);
+    }
+
     processedImages.forEach(imageData => {
         const resultDiv = document.createElement('div');
         resultDiv.className = 'result-item';
@@ -311,6 +325,26 @@ async function downloadAllSizes(originalName) {
     const link = document.createElement('a');
     link.href = URL.createObjectURL(content);
     link.download = `${originalName.split('.')[0]}_resized.zip`;
+    link.click();
+}
+
+// 全ての画像を一つのZIPでダウンロード
+async function downloadAllImagesAsZip() {
+    if (processedImages.length === 0) return;
+
+    const zip = new JSZip();
+    
+    processedImages.forEach(imageData => {
+        imageData.results.forEach(result => {
+            const base64Data = result.dataURL.split(',')[1];
+            zip.file(result.fileName, base64Data, { base64: true });
+        });
+    });
+
+    const content = await zip.generateAsync({ type: 'blob' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(content);
+    link.download = 'all_resized_images.zip';
     link.click();
 }
 
