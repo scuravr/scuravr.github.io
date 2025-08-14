@@ -55,6 +55,14 @@
       "image": "https://scuravr.github.io/img/600_a2_01.webp"
     },
     {
+      "name": "900P-01",
+      "extension": "9663",
+      "type": "pushphone",
+      "identifier": "X0LIAYID",
+      "model": "900-P電話機",
+      "image": "https://scuravr.github.io/img/900-p_01.webp"
+    },
+    {
       "name": "windows-software-phone",
       "extension": "2672",
       "type": "phone",
