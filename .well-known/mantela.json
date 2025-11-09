@@ -63,12 +63,6 @@
       "image": "https://scuravr.github.io/img/900-p_01.webp"
     },
     {
-      "name": "windows-software-phone",
-      "extension": "2672",
-      "type": "phone",
-      "identifier": "TJFVTUXY"
-    },
-    {
       "name": "Testcall",
       "extension": "1234",
       "type": "information",
