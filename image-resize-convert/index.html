@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画像リサイズ＆変換ツール</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>画像リサイズ & 変換ツール</h1>
+
+    <div class="container">
+        
+        <div class="settings-group">
+            <div class="label-row">
+                <label>リサイズ基準</label>
+            </div>
+            <div class="radio-group">
+                <label><input type="radio" name="resizeMode" value="long" checked> 長辺基準</label>
+                <label><input type="radio" name="resizeMode" value="short"> 短辺基準</label>
+            </div>
+            <div style="margin-top: 10px;">
+                <label>ターゲットサイズ (px)</label>
+                <input type="number" id="targetSize" value="1920">
+                <div class="preset-btns">
+                    <button class="preset-btn" data-size="960">960</button>
+                    <button class="preset-btn" data-size="1024">1024</button>
+                    <button class="preset-btn" data-size="1280">1280</button>
+                    <button class="preset-btn" data-size="1440">1440</button>
+                    <button class="preset-btn" data-size="1920">1920</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-group">
+            <div class="label-row">
+                <label>出力形式</label>
+                <select id="outputFormat" style="width: auto; flex-grow: 1; margin-left: 10px;">
+                    <option value="image/webp" selected>WebP</option>
+                    <option value="image/jpeg">JPG</option>
+                    <option value="image/png">PNG</option>
+                </select>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <div class="label-row">
+                    <label>画質 (JPEG/WebPのみ有効)</label>
+                    <span id="qualityValue">85</span>
+                </div>
+                <div class="flex-row" style="align-items: center;">
+                   <input type="range" id="imageQuality" min="1" max="100" value="85" style="flex-grow: 1;">
+                </div>
+                <p style="font-size: 0.8rem; color: #64748b; margin: 5px 0 0 0;">
+                    ※数値が高いほど高画質・ファイルサイズ大。PNGには適用されません。
+                </p>
+            </div>
+        </div>
+
+        <div class="settings-group">
+            <div class="label-row">
+                <label>ファイル名変更</label>
+                <input type="checkbox" id="enableRename" checked>
+            </div>
+            
+            <div id="renameOptions">
+                <div class="flex-row">
+                    <div class="flex-item">
+                        <label>接頭辞 (Prefix)</label>
+                        <input type="text" id="filenamePrefix" value="hogehoge" placeholder="例: image">
+                    </div>
+                    <div class="flex-item">
+                        <label>区切り文字</label>
+                        <select id="filenameSeparator">
+                            <option value="_">_ (アンダースコア)</option>
+                            <option value="-">- (ハイフン)</option>
+                            <option value="">なし</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top: 10px;">
+                    <label>連番の桁数 (パディング)</label>
+                    <select id="digitPadding">
+                        <option value="1">1桁 (1, 2...)</option>
+                        <option value="2">2桁 (01, 02...)</option>
+                        <option value="3" selected>3桁 (001, 002...)</option>
+                        <option value="4">4桁 (0001...)</option>
+                        <option value="5">5桁</option>
+                        <option value="6">6桁</option>
+                        <option value="9">9桁</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="drop-zone">
+            <p>ここに画像をドラッグ＆ドロップ<br>(またはクリックして選択)</p>
+            <input type="file" id="file-input" multiple accept="image/*">
+        </div>
+
+        <div id="status"></div>
+        <button id="downloadBtn" class="btn">ZIPでダウンロード</button>
+
+    </div>
+
+    <div class="footer" style="margin: 1em 0;"><a href="../index.html">indexに戻る</a></div>
+    <p>© 2025 scura. 特記なき場合、当サイトに掲載している画像やテキストはCC-BY 4.0でご利用いただけます。プログラムやソースコードは MIT Licenseにて提供します。</p>
+
+    <script src="script.js"></script>
+</body>
+</html>
