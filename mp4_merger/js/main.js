@@ -1,9 +1,12 @@
-// FFmpeg.wasmのライブラリをCDNからインポート
-import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
-import { fetchFile, toBlobURL } from 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js';
+// 1. import 文を削除し、HTMLで読み込んだライブラリから変数を取り出す
+// import { FFmpeg } from ... (削除)
+// import { fetchFile, toBlobURL } ... (削除)
+
+const { FFmpeg } = FFmpegWASM;
+const { fetchFile, toBlobURL } = FFmpegUtil;
 
 const ffmpeg = new FFmpeg();
-let filesArray = []; // 選択されたファイルを保持する配列
+let filesArray = [];
 
 const fileInput = document.getElementById('fileInput');
 const fileList = document.getElementById('fileList');
@@ -14,48 +17,47 @@ const outputVideo = document.getElementById('outputVideo');
 const downloadLink = document.getElementById('downloadLink');
 const videoContainer = document.getElementById('videoContainer');
 
-// 初期化処理
 const init = async () => {
     message.innerText = 'FFmpegをロード中...';
     try {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+        // Coreファイル（重いファイル）はCDNのままでOKですが、
+        // 確実に読み込むためにバージョンを指定してBlob化します。
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm';
+        
         await ffmpeg.load({
             coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
             wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
         });
+
         message.innerText = '準備完了。ファイルを選択してください。';
+        console.log("FFmpeg loaded successfully");
     } catch (e) {
         console.error(e);
-        message.innerText = 'エラー: FFmpegのロードに失敗しました。ページをリロードしてください。';
+        message.innerText = `エラー: ${e.message}\n(コンソールを確認してください)`;
     }
 };
 
 init();
 
-// ファイル選択時の処理
+// --- 以下、以前のコードと同じロジック ---
+
 fileInput.addEventListener('change', (e) => {
+    // ... (以前と同じ) ...
     const newFiles = Array.from(e.target.files);
     if (newFiles.length === 0) return;
-
-    // ファイル配列に追加
     filesArray = [...newFiles];
-
-    // デフォルトでファイル名の降順にソート
     filesArray.sort((a, b) => b.name.localeCompare(a.name));
-
     updateUI();
 });
 
-// UIの更新（リスト描画）
 const updateUI = () => {
+    // ... (以前と同じ) ...
     fileList.innerHTML = '';
     fileCount.innerText = `${filesArray.length} ファイル選択中`;
 
     filesArray.forEach((file, index) => {
         const item = document.createElement('div');
         item.className = 'file-item';
-        
-        // HTML生成
         item.innerHTML = `
             <span class="file-name">${index + 1}. ${file.name}</span>
             <div class="controls">
@@ -66,11 +68,10 @@ const updateUI = () => {
         `;
         fileList.appendChild(item);
     });
-
     mergeBtn.disabled = filesArray.length < 2;
 };
 
-// グローバルスコープに関数を公開（HTMLのonclickから呼ぶため）
+// グローバル関数への紐付け
 window.moveUp = (index) => {
     if (index === 0) return;
     [filesArray[index - 1], filesArray[index]] = [filesArray[index], filesArray[index - 1]];
@@ -88,43 +89,34 @@ window.removeFile = (index) => {
     updateUI();
 };
 
-// 結合ボタンクリック
 mergeBtn.addEventListener('click', async () => {
     if (filesArray.length < 2) return;
     
     mergeBtn.disabled = true;
-    message.innerText = '結合処理を開始します...\n(ファイルサイズによって時間がかかります)';
+    message.innerText = '結合処理を開始します...';
     videoContainer.style.display = 'none';
 
     try {
         const inputNames = [];
-
-        // 1. ファイルをFFmpegの仮想ファイルシステムに書き込む
+        // 1. 書き込み
         for (let i = 0; i < filesArray.length; i++) {
             const file = filesArray[i];
-            // ファイル名からスペースなどを除去して安全な名前にする
             const safeName = `input${i}.mp4`; 
             await ffmpeg.writeFile(safeName, await fetchFile(file));
             inputNames.push(safeName);
             message.innerText = `読み込み中: ${Math.round(((i + 1) / filesArray.length) * 100)}%`;
         }
 
-        // 2. 結合用のリストファイル(concat demuxer format)を作成
-        // file 'input0.mp4'
-        // file 'input1.mp4'
+        // 2. リスト作成
         const listContent = inputNames.map(name => `file '${name}'`).join('\n');
         await ffmpeg.writeFile('list.txt', listContent);
 
-        // 3. FFmpegコマンド実行 (再エンコードなしで結合: -c copy)
+        // 3. 結合実行
         message.innerText = '結合中...';
-        
-        // -f concat -safe 0 -i list.txt -c copy output.mp4
         await ffmpeg.exec(['-f', 'concat', '-safe', '0', '-i', 'list.txt', '-c', 'copy', 'output.mp4']);
 
-        // 4. 出力ファイルの読み込み
+        // 4. 読み込みと表示
         const data = await ffmpeg.readFile('output.mp4');
-        
-        // 5. Blob URLの生成と表示
         const videoBlob = new Blob([data.buffer], { type: 'video/mp4' });
         const videoUrl = URL.createObjectURL(videoBlob);
         
@@ -135,7 +127,7 @@ mergeBtn.addEventListener('click', async () => {
         videoContainer.style.display = 'block';
         message.innerText = '完了しました！';
 
-        // 後始末（メモリ解放のため仮想ファイルを削除）
+        // クリーンアップ
         await ffmpeg.deleteFile('list.txt');
         await ffmpeg.deleteFile('output.mp4');
         for (const name of inputNames) {
@@ -144,7 +136,7 @@ mergeBtn.addEventListener('click', async () => {
 
     } catch (error) {
         console.error(error);
-        message.innerText = 'エラーが発生しました。\nコーデックが異なる動画同士は結合できない場合があります。';
+        message.innerText = 'エラーが発生しました。コンソールを確認してください。';
     } finally {
         mergeBtn.disabled = false;
     }
