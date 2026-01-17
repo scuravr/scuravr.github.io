@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP4 Merger</title>
+    <script src="coi-serviceworker.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>MP4 Merger</h1>
+        <p>ブラウザ上で複数のMP4ファイルを結合します。</p>
+
+        <div class="upload-section">
+            <input type="file" id="fileInput" multiple accept="video/mp4">
+            <label for="fileInput" class="btn">MP4ファイルを選択</label>
+            <span id="fileCount">選択されていません</span>
+        </div>
+
+        <div id="fileList" class="file-list">
+            </div>
+
+        <div class="actions">
+            <button id="mergeBtn" class="btn btn-primary" disabled>結合してダウンロード</button>
+        </div>
+
+        <div id="message" class="message"></div>
+        
+        <div id="videoContainer" style="display:none; margin-top: 20px;">
+            <h3>プレビュー</h3>
+            <video id="outputVideo" controls width="100%"></video>
+            <br>
+            <a id="downloadLink" class="btn" style="background-color: #28a745; margin-top: 10px;">動画を保存</a>
+        </div>
+    </div>
+
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>
