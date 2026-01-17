@@ -20,20 +20,21 @@ const videoContainer = document.getElementById('videoContainer');
 const init = async () => {
     message.innerText = 'FFmpegをロード中...';
     try {
-        // Coreファイル（重いファイル）はCDNのままでOKですが、
-        // 確実に読み込むためにバージョンを指定してBlob化します。
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm';
+        // CDNではなく、ローカルのjsフォルダからCoreを読み込む設定
+        // 注意: jsフォルダ内のファイルを指すため、パスは "./js/..." ではなく
+        // HTML(ルート)から見たパス、または相対パスを指定します。
         
         await ffmpeg.load({
-            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+            coreURL: await toBlobURL('js/ffmpeg-core.js', 'text/javascript'),
+            wasmURL: await toBlobURL('js/ffmpeg-core.wasm', 'application/wasm'),
         });
 
         message.innerText = '準備完了。ファイルを選択してください。';
         console.log("FFmpeg loaded successfully");
     } catch (e) {
         console.error(e);
-        message.innerText = `エラー: ${e.message}\n(コンソールを確認してください)`;
+        // エラー内容を画面にも表示
+        message.innerText = `エラーが発生しました:\n${e.message}\n(詳細はコンソールを確認してください)`;
     }
 };
 
