@@ -47,7 +47,7 @@ fileInput.addEventListener('change', (e) => {
     const newFiles = Array.from(e.target.files);
     if (newFiles.length === 0) return;
     filesArray = [...newFiles];
-    filesArray.sort((a, b) => b.name.localeCompare(a.name));
+    filesArray.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
     updateUI();
 });
 
@@ -114,7 +114,15 @@ mergeBtn.addEventListener('click', async () => {
 
         // 3. 結合実行
         message.innerText = '結合中...';
-        await ffmpeg.exec(['-f', 'concat', '-safe', '0', '-i', 'list.txt', '-c', 'copy', 'output.mp4']);
+        await ffmpeg.exec([
+            '-f', 'concat',
+            '-safe', '0',
+            '-i', 'list.txt',
+            '-c', 'copy', 
+            '-ignore_unknown',      // ←重要: GPSなど不明なデータトラックによる尺のズレを防ぐ
+            '-map_metadata', '-1',  // ←重要: 全体の長さをおかしくするメタデータを削除
+            'output.mp4'
+        ]);
 
         // 4. 読み込みと表示
         const data = await ffmpeg.readFile('output.mp4');
