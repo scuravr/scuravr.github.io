@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(mkdir:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(for img in img/20060825_*.webp img/20060826_*.webp)",
+      "Bash(do webpinfo:*)",
+      "Bash(done)"
     ],
     "deny": []
   }
