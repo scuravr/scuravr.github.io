@@ -8,7 +8,8 @@
       "Bash(done)",
       "Bash(ls:*)",
       "Bash(for f in 200803*.webp)",
-      "Bash(do identify -format '%f %w %h\\\\n' \"$f\")"
+      "Bash(do identify -format '%f %w %h\\\\n' \"$f\")",
+      "Bash(webpinfo:*)"
     ],
     "deny": []
   }
