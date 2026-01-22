@@ -6,7 +6,9 @@
       "Bash(for img in img/20060825_*.webp img/20060826_*.webp)",
       "Bash(do webpinfo:*)",
       "Bash(done)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(for f in 200803*.webp)",
+      "Bash(do identify -format '%f %w %h\\\\n' \"$f\")"
     ],
     "deny": []
   }
