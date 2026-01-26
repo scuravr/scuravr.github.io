@@ -9,7 +9,11 @@
       "Bash(ls:*)",
       "Bash(for f in 200803*.webp)",
       "Bash(do identify -format '%f %w %h\\\\n' \"$f\")",
-      "Bash(webpinfo:*)"
+      "Bash(webpinfo:*)",
+      "Bash(for file in *.html)",
+      "Bash(do)",
+      "Bash(perl:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }
